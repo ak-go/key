@@ -25,6 +25,7 @@ import de.uka.ilkd.key.speclang.jml.JMLSpecExtractor;
 import de.uka.ilkd.key.speclang.njml.OverloadedOperatorHandler.JMLOperator;
 import de.uka.ilkd.key.speclang.translation.SLExceptionFactory;
 import de.uka.ilkd.key.speclang.translation.SLExpression;
+import de.uka.ilkd.key.speclang.translation.SLParameters;
 import de.uka.ilkd.key.speclang.translation.SLTranslationException;
 import de.uka.ilkd.key.util.MiscTools;
 import de.uka.ilkd.key.util.Triple;
@@ -419,7 +420,14 @@ public final class JmlTermFactory {
         }
     }
 
+    public @NonNull Term newExp(KeYJavaType objectType, ImmutableList<Term> params) {
+        Term result = tb.func(getNewFor(objectType.getSort()), params.toArray(new Term[0]));
+        return result;
+    }
 
+    private JFunction getNewFor(Sort objectSort) {
+        return SortDependingFunction.getFirstInstance(new Name("newObject"), services).getInstanceFor(objectSort, services);
+    }
     private interface UnboundedNumericalQuantifier {
         Term apply(KeYJavaType declsType, boolean nullable, ImmutableList<QuantifiableVariable> qvs,
                 Term range, Term body);

@@ -1103,6 +1103,13 @@ class Translator extends JmlParserBaseVisitor<Object> {
         return getSlParametersWithHeap(params);
     }
 
+    private SLParameters visitParametersWithBaseHeap(JmlParser.ExpressionlistContext ctx) {
+
+        ImmutableList<SLExpression> params = accept(ctx);
+        params = params.prepend(new SLExpression(services.getTermBuilder().getBaseHeap()));
+        return new SLParameters(params);
+    }
+
     private SLParameters getSlParametersWithHeap(ImmutableList<SLExpression> params) {
         ImmutableList<SLExpression> preHeapParams = ImmutableSLList.nil();
         for (LocationVariable heap : HeapContext.getModHeaps(services, false)) {
@@ -1127,10 +1134,17 @@ class Translator extends JmlParserBaseVisitor<Object> {
     }
     // endregion
 
+    boolean strict = false;
     @Override
     public Object visitNew_expr(JmlParser.New_exprContext ctx) {
-        raiseError("Object creation with 'new' is not supported specifications.", ctx);
-        return null;
+        if(strict) {
+            raiseError("Object creation with 'new' is not supported specifications.", ctx);
+            return null;
+        }
+        SLParameters params = visitParameters(ctx.expressionlist());
+        KeYJavaType objectType = accept(ctx.type());
+        SLExpression e = new SLExpression(termFactory.newExp(objectType, ImmutableList.fromList(params.parameters().stream().map(SLExpression::getTerm).collect(Collectors.toList()))));
+        return e;
     }
 
     @Override
