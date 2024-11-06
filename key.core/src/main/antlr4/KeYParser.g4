@@ -683,6 +683,7 @@ varexpId: // weigl, 2021-03-12: This will be later just an arbitrary identifier.
   | HASLABEL
   | ISSTATICFIELD
   | ISMODELFIELD
+  | ISGHOSTFIELD
   | HASSUBFORMULAS
   | FIELDTYPE
   | NEW

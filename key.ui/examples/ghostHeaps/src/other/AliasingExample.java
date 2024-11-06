@@ -1,4 +1,4 @@
-public class aliasingExample{
+public class AliasingExample{
     // non-ghost object
     public DummyObject o = new DummyObject();
 
