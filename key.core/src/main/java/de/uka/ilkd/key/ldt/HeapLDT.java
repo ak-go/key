@@ -51,6 +51,8 @@ public final class HeapLDT extends LDT {
 
     // additional sorts
     private final Sort fieldSort;
+    private final Sort ghostFieldSort;
+    private final Sort javaFieldSort;
 
     // select/store
     private final SortDependingFunction select;
@@ -95,6 +97,8 @@ public final class HeapLDT extends LDT {
         final Namespace<IProgramVariable> progVars = services.getNamespaces().programVariables();
 
         fieldSort = sorts.lookup(new Name("Field"));
+        ghostFieldSort = sorts.lookup(new Name("GhostField"));
+        javaFieldSort = sorts.lookup(new Name("JavaField"));
         select = addSortDependingFunction(services, SELECT_NAME.toString());
         store = addFunction(services, "store");
         create = addFunction(services, "create");
@@ -225,6 +229,11 @@ public final class HeapLDT extends LDT {
         return fieldSort;
     }
 
+    public Sort getJavaFieldSort() { return javaFieldSort; }
+
+    public Sort getGhostFieldSort() {
+        return ghostFieldSort;
+    }
 
     /**
      * Returns the select function for the given sort.
@@ -399,6 +408,7 @@ public final class HeapLDT extends LDT {
                         fieldPV.getKeYJavaType(), targetSort(), fieldPV.getContainerType(),
                         fieldPV.isStatic(), new ImmutableArray<>(), heapCount, 1);
                 } else {
+                    var sort = fieldPV.isGhost() ? ghostFieldSort : javaFieldSort;
                     result = new JFunction(name, fieldSort, new Sort[0], null, true);
                 }
                 services.getNamespaces().functions().addSafely(result);
