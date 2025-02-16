@@ -44,7 +44,8 @@ public class AliasingExample{
      */
     public boolean outputBasedOnGhostVariable() {
         DummyObject help = o;                   // hier wird nur eine Referenz auf o erstellt, wie kann ich eine Kopie inklusive der ghost Variablen erstellen?
-        //@ set go.gnext = new DummyObject();     // does not work becaus new is not allowed in set statement
+        // set go.gnext = new DummyObject();     // does not work becaus new is not allowed in set statement
+        //@ set go.gnext = newDummyObject();
         //@ set go.ga = go.ga + 1;              // beim Vergleich mit "==" werden die Werte von ghost Variablen ignoriert
 
         return help == o;                       // wie kann man den return value von ghost code abhängig machen? dirket darauf zugreiffen geht ja nicht, oder doch?
