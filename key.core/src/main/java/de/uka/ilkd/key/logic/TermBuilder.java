@@ -10,6 +10,7 @@ import java.util.Map;
 
 import de.uka.ilkd.key.java.Services;
 import de.uka.ilkd.key.java.TypeConverter;
+import de.uka.ilkd.key.java.abstraction.Field;
 import de.uka.ilkd.key.java.abstraction.KeYJavaType;
 import de.uka.ilkd.key.java.abstraction.PrimitiveType;
 import de.uka.ilkd.key.ldt.*;
@@ -920,13 +921,13 @@ public class TermBuilder {
             assert lhs.arity() == 0 : "uh oh: " + lhs;
             return elementary((UpdateableOperator) lhs.op(), rhs);
         } else if (heapLDT.getSortOfSelect(lhs.op()) != null
-                && lhs.sub(0).op().equals(heapLDT.getHeap())) {
+                && lhs.sub(0).op() instanceof LocationVariable heapVar && heapVar.sort() == heapLDT.targetSort()) {
             final Term heapTerm = lhs.sub(0);
             final Term objectTerm = lhs.sub(1);
             final Term fieldTerm = lhs.sub(2);
 
             final Term fullRhs = store(heapTerm, objectTerm, fieldTerm, rhs);
-            return elementary(heapLDT.getHeap(), fullRhs);
+            return elementary(heapVar, fullRhs);
         } else if (lhs.op() == UpdateApplication.UPDATE_APPLICATION) {
             // #1536 A nested updates like
             // { {a:=1} b :=a}
@@ -1605,7 +1606,15 @@ public class TermBuilder {
     }
 
     public Term dot(Sort asSort, Term o, Term f) {
-        return select(asSort, getBaseHeap(), o, f);
+
+        final Sort ghostFieldSort = services.getTypeConverter().getHeapLDT().getGhostFieldSort();
+        final Term heap;
+        if(f.sort() == ghostFieldSort){
+            heap = var(services.getTypeConverter().getHeapLDT().getGhostHeap());
+        } else {
+            heap = getBaseHeap();
+        }
+        return select(asSort, heap, o, f);
     }
 
     public Term getBaseHeap() {
@@ -1616,7 +1625,14 @@ public class TermBuilder {
 
     public Term dot(Sort asSort, Term o, JFunction f) {
         final Sort fieldSort = services.getTypeConverter().getHeapLDT().getFieldSort();
-        return f.sort() == fieldSort ? dot(asSort, o, func(f)) : func(f, getBaseHeap(), o);
+        final Sort ghostFieldSort = services.getTypeConverter().getHeapLDT().getGhostFieldSort();
+        final Term heap;
+        if(f.sort() == ghostFieldSort){
+            heap = var(services.getTypeConverter().getHeapLDT().getGhostHeap());
+        } else {
+            heap = getBaseHeap();
+        }
+        return f.sort().extendsTrans(fieldSort) ? dot(asSort, o, func(f)) : func(f, heap, o);
     }
 
     public Term dot(Sort asSort, Term o, LocationVariable field) {

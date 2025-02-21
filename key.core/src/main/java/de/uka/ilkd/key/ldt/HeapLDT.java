@@ -44,8 +44,9 @@ public final class HeapLDT extends LDT {
     public static final Name BASE_HEAP_NAME = new Name("heap");
     public static final Name SAVED_HEAP_NAME = new Name("savedHeap");
     public static final Name PERMISSION_HEAP_NAME = new Name("permissions");
+    public static final Name GHOST_HEAP_NAME = new Name("gHeap");
     public static final Name[] VALID_HEAP_NAMES =
-        { BASE_HEAP_NAME, SAVED_HEAP_NAME, PERMISSION_HEAP_NAME };
+        { BASE_HEAP_NAME, SAVED_HEAP_NAME, PERMISSION_HEAP_NAME, GHOST_HEAP_NAME };
 
 
 
@@ -81,6 +82,7 @@ public final class HeapLDT extends LDT {
     private final JFunction acc;
     private final JFunction reach;
     private final Function prec;
+    private final LocationVariable gHeap;
 
     // heap pv
     private ImmutableList<LocationVariable> heaps;
@@ -117,9 +119,11 @@ public final class HeapLDT extends LDT {
         acc = addFunction(services, "acc");
         reach = addFunction(services, "reach");
         prec = addFunction(services, "prec");
+        gHeap = ((LocationVariable) progVars.lookup(GHOST_HEAP_NAME));
         heaps = ImmutableSLList.<LocationVariable>nil()
                 .append((LocationVariable) progVars.lookup(BASE_HEAP_NAME))
-                .append((LocationVariable) progVars.lookup(SAVED_HEAP_NAME));
+                .append((LocationVariable) progVars.lookup(SAVED_HEAP_NAME))
+                .append(gHeap);
         if (services instanceof Services s) {
             if (s.getProfile() instanceof JavaProfile) {
                 if (((JavaProfile) s.getProfile()).withPermissions()) {
@@ -350,6 +354,10 @@ public final class HeapLDT extends LDT {
         return heaps.head();
     }
 
+    public LocationVariable getGhostHeap() {
+     return gHeap;
+    }
+
     public LocationVariable getSavedHeap() {
         return heaps.tail().head();
     }
@@ -369,7 +377,7 @@ public final class HeapLDT extends LDT {
     }
 
     public LocationVariable getPermissionHeap() {
-        return heaps.size() > 2 ? heaps.tail().tail().head() : null;
+        return heaps.size() > 3 ? heaps.tail().tail().tail().head() : null;
     }
 
     /**
@@ -399,7 +407,7 @@ public final class HeapLDT extends LDT {
                 if (fieldPV.isModel()) {
                     int heapCount = 0;
                     for (LocationVariable heap : getAllHeaps()) {
-                        if (heap == getSavedHeap()) {
+                        if (heap == getSavedHeap() || heap == getGhostHeap()) {
                             continue;
                         }
                         heapCount++;

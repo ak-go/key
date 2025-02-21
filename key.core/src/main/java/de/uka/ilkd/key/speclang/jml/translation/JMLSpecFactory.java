@@ -1488,6 +1488,17 @@ public class JMLSpecFactory {
                 setStatementContext.getStartLocation());
         }
 
+        if (services.getTypeConverter().getHeapLDT().isSelectOp(assignee.op())) {
+            Operator op = assignee.subs().last().op();
+            SplitFieldName split = HeapLDT.trySplitFieldName(op);
+            if (split != null) {
+                ProgramVariable attribut = services.getJavaInfo().getAttribute(split.attributeName(), split.className());
+                if (attribut.isGhost()) {
+                    LocationVariable ghostHeap = services.getTypeConverter().getHeapLDT().getGhostHeap();
+                    assignee = services.getTermFactory().createTerm(assignee.op(), services.getTermBuilder().var(ghostHeap), assignee.sub(1), assignee.sub(2));
+                }
+            }
+        }
         services.getSpecificationRepository().addStatementSpec(
             statement,
             new SpecificationRepository.JmlStatementSpec(pv, ImmutableList.of(assignee, value)));
