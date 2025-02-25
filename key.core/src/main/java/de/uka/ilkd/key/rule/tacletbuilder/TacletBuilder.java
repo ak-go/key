@@ -75,17 +75,37 @@ public abstract class TacletBuilder<T extends Taclet> {
         return false;
     }
 
+    private static QuantifiableVariable findFreeVarSV(Term t) {
+        for (final QuantifiableVariable var : t.freeVars()) {
+            if (var instanceof VariableSV) {
+                return var;
+            }
+        }
+        return null;
+    }
+
+    private static QuantifiableVariable findFreeVarSV(Sequent sequent) {
+        for (final SequentFormula cf : sequent) {
+            if (containsFreeVarSV(cf.formula())) {
+                return findFreeVarSV(cf.formula());
+            }
+        }
+        return null;
+    }
+
     static void checkContainsFreeVarSV(Sequent seq, Name tacletName, String str) {
         if (containsFreeVarSV(seq)) {
+            String freeVarName = findFreeVarSV(seq).name().toString();
             throw new TacletBuilderException(tacletName,
-                "Free Variable in " + str + " in Taclet / sequent: " + seq);
+                "Free Variable " + freeVarName + " in " + str + " in Taclet / sequent: " + seq);
         }
     }
 
     static void checkContainsFreeVarSV(Term t, Name tacletName, String str) {
         if (containsFreeVarSV(t)) {
+            String freeVarName = findFreeVarSV(t).name().toString();
             throw new TacletBuilderException(tacletName,
-                "Free Variable found in " + str + " in Taclet / Term: " + t);
+                "Free Variable " + freeVarName + " found in " + str + " in Taclet / Term: " + t);
         }
     }
 
