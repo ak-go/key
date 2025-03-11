@@ -1,9 +1,25 @@
+package other;
 public class AliasingExample{
     // non-ghost object
     public DummyObject o = new DummyObject();
 
     // ghost object
     //@ ghost public DummyObject go = o;
+    //@ ghost public DummyObject d = new DummyObject();
+
+    /* public normal_behavior
+        requires true;
+        ensures \result == 0;
+     */
+    /*public int foo(){
+        DummyObject dum = new DummyObject();
+        o = dum;
+        o.a = 1;
+        //@ set d = dum;
+        //@ set d.a = 1;
+
+        return o.a;
+    }*/
 
     /*@ public normal_behavior
         requires true;

@@ -1,3 +1,4 @@
+package other;
 public class SmallExample {
 
     public int i = 0;

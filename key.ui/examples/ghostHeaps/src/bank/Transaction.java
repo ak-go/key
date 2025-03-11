@@ -2,6 +2,7 @@ package bank;
 
 public class Transaction {
     //@ ghost public boolean active = false;
+    //@ ghost public boolean success;
 
     private /*@ spec_public @*/ int amount;
 
@@ -9,7 +10,7 @@ public class Transaction {
     @   ensures this.active == false;
     @   ensures this.amount == amount;
     @*/
-    public /*@ pure */ Transaction(){
+    public /*@ pure @*/ Transaction(){
         this.amount = 0;
     }
 
@@ -34,7 +35,7 @@ public class Transaction {
         assignable active, amount;
         ensures this.active == false && this.amount == 0;
      */
-    public void resetActive() {
+    public void resetAmount() {
         //@ set active = false;
         this.amount = 0;
     }
