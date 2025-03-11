@@ -31,25 +31,21 @@ public class Account {
         }
     }
 
-    /* also
-    public normal_behavior
-    @   requires t.amount > 0 && balance >= t.amount && !locked;
-    @   assignable balance;
-    @   ensures \result == true && balance == \old(balance) - t.amount;
-
-    @
-    @   also
-    @   public normal_behavior
-    @   assignable \nothing;
-    @   ensures !(t.amount > 0 && !locked) ==> \result == false;
-     */
-
     /*@ public normal_behavior
     @   requires t.amount > 0 && !locked && balance < t.amount;
     @   assignable lastTransaction, t.success;
     @   ensures \old(lastTransaction) != null && !\old(lastTransaction).success ==>
     @       locked;
     @   ensures lastTransaction == t && t.success == false && \result == false;
+    @   also
+    @   public normal_behavior
+    @   requires t.amount > 0 && balance >= t.amount && !locked;
+    @   assignable balance;
+    @   ensures \result == true && balance == \old(balance) - t.amount;
+    @   also
+    @   public normal_behavior
+    @   assignable \nothing;
+    @   ensures !(t.amount > 0 && !locked) ==> \result == false;
     @*/
     public boolean withdraw(Transaction t) {
         if(t.getAmount() > 0 && !locked) {
