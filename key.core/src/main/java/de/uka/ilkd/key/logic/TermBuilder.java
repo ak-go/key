@@ -1647,7 +1647,14 @@ public class TermBuilder {
 
     public Term staticDot(Sort asSort, JFunction f) {
         final Sort fieldSort = services.getTypeConverter().getHeapLDT().getFieldSort();
-        return f.sort() == fieldSort ? staticDot(asSort, func(f)) : func(f, getBaseHeap());
+        final Sort ghostFieldSort = services.getTypeConverter().getHeapLDT().getGhostFieldSort();
+        final Term heap;
+        if(f.sort() == ghostFieldSort){
+            heap = var(services.getTypeConverter().getHeapLDT().getGhostHeap());
+        } else {
+            heap = getBaseHeap();
+        }
+        return f.sort().extendsTrans(fieldSort) ? staticDot(asSort, func(f)) : func(f, heap);
     }
 
     public Term arr(Term idx) {

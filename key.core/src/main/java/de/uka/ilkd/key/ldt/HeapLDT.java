@@ -417,7 +417,7 @@ public final class HeapLDT extends LDT {
                         fieldPV.isStatic(), new ImmutableArray<>(), heapCount, 1);
                 } else {
                     var sort = fieldPV.isGhost() ? ghostFieldSort : javaFieldSort;
-                    result = new JFunction(name, fieldSort, new Sort[0], null, true);
+                    result = new JFunction(name, sort, new Sort[0], null, true);
                 }
                 services.getNamespaces().functions().addSafely(result);
             }

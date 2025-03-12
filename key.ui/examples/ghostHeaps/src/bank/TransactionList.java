@@ -1,16 +1,15 @@
 package bank;
 
 public interface TransactionList {
-
-    //@ ghost Transaction[] array = new Transaction[10];
+    //@ instance ghost Transaction[] array = new Transaction[10];
     //@ ghost int size = 0;
 
     // private represents footprint = array, array[*], size;
 
-    /*@ private invariant array != null;
-      @ private invariant 0 <= size && size <= array.length;
-      @ private invariant (\forall int i; 0 <= i && i < size; array[i] != null);
-      @ private invariant \typeof(array) == \type(Transaction[]);
+    /*@ private instance invariant array != null;
+      @ private instance invariant 0 <= size && size <= array.length;
+      @ private instance invariant (\forall int i; 0 <= i && i < size; array[i] != null);
+      @ private instance invariant \typeof(array) == \type(Transaction[]);
       @*/
 
 
