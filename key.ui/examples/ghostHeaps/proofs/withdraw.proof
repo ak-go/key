@@ -1,0 +1,367 @@
+\profile "Java Profile";
+
+\settings // Proof-Settings-Config-File
+{ 
+    "Choice" : { 
+        "JavaCard" : "JavaCard:off",
+        "Strings" : "Strings:on",
+        "assertions" : "assertions:safe",
+        "bigint" : "bigint:on",
+        "floatRules" : "floatRules:strictfpOnly",
+        "initialisation" : "initialisation:disableStaticInitialisation",
+        "intRules" : "intRules:arithmeticSemanticsIgnoringOF",
+        "integerSimplificationRules" : "integerSimplificationRules:full",
+        "javaLoopTreatment" : "javaLoopTreatment:efficient",
+        "mergeGenerateIsWeakeningGoal" : "mergeGenerateIsWeakeningGoal:off",
+        "methodExpansion" : "methodExpansion:noRestriction",
+        "modelFields" : "modelFields:treatAsAxiom",
+        "moreSeqRules" : "moreSeqRules:off",
+        "permissions" : "permissions:off",
+        "programRules" : "programRules:Java",
+        "reach" : "reach:on",
+        "runtimeExceptions" : "runtimeExceptions:ban",
+        "sequences" : "sequences:on",
+        "wdChecks" : "wdChecks:off",
+        "wdOperator" : "wdOperator:L"
+     },
+    "Labels" : { 
+        "UseOriginLabels" : true
+     },
+    "NewSMT" : { 
+        
+     },
+    "SMTSettings" : { 
+        "SelectedTaclets" : [ 
+            
+         ],
+        "UseBuiltUniqueness" : false,
+        "explicitTypeHierarchy" : false,
+        "instantiateHierarchyAssumptions" : true,
+        "integersMaximum" : 2147483645,
+        "integersMinimum" : -2147483645,
+        "invariantForall" : false,
+        "maxGenericSorts" : 2,
+        "useConstantsForBigOrSmallIntegers" : true,
+        "useUninterpretedMultiplication" : true
+     },
+    "Strategy" : { 
+        "ActiveStrategy" : "JavaCardDLStrategy",
+        "MaximumNumberOfAutomaticApplications" : 10000,
+        "Timeout" : -1,
+        "options" : { 
+            "AUTO_INDUCTION_OPTIONS_KEY" : "AUTO_INDUCTION_OFF",
+            "BLOCK_OPTIONS_KEY" : "BLOCK_CONTRACT_INTERNAL",
+            "CLASS_AXIOM_OPTIONS_KEY" : "CLASS_AXIOM_FREE",
+            "DEP_OPTIONS_KEY" : "DEP_ON",
+            "INF_FLOW_CHECK_PROPERTY" : "INF_FLOW_CHECK_FALSE",
+            "LOOP_OPTIONS_KEY" : "LOOP_SCOPE_INV_TACLET",
+            "METHOD_OPTIONS_KEY" : "METHOD_EXPAND",
+            "MPS_OPTIONS_KEY" : "MPS_MERGE",
+            "NON_LIN_ARITH_OPTIONS_KEY" : "NON_LIN_ARITH_NONE",
+            "OSS_OPTIONS_KEY" : "OSS_ON",
+            "QUANTIFIERS_OPTIONS_KEY" : "QUANTIFIERS_NON_SPLITTING_WITH_PROGS",
+            "QUERYAXIOM_OPTIONS_KEY" : "QUERYAXIOM_ON",
+            "QUERY_NEW_OPTIONS_KEY" : "QUERY_OFF",
+            "SPLITTING_OPTIONS_KEY" : "SPLITTING_DELAYED",
+            "STOPMODE_OPTIONS_KEY" : "STOPMODE_DEFAULT",
+            "SYMBOLIC_EXECUTION_ALIAS_CHECK_OPTIONS_KEY" : "SYMBOLIC_EXECUTION_ALIAS_CHECK_NEVER",
+            "SYMBOLIC_EXECUTION_NON_EXECUTION_BRANCH_HIDING_OPTIONS_KEY" : "SYMBOLIC_EXECUTION_NON_EXECUTION_BRANCH_HIDING_OFF",
+            "USER_TACLETS_OPTIONS_KEY1" : "USER_TACLETS_OFF",
+            "USER_TACLETS_OPTIONS_KEY2" : "USER_TACLETS_OFF",
+            "USER_TACLETS_OPTIONS_KEY3" : "USER_TACLETS_OFF",
+            "VBT_PHASE" : "VBT_SYM_EX"
+         }
+     }
+ } 
+
+\javaSource "src";
+
+\programVariables{
+    bank.Account acc;
+    bank.Transaction t;
+}
+
+\include "ghostHeapRules.key";
+\problem {
+     !acc = null
+   &   boolean::select(heap,
+                       acc,
+                       java.lang.Object::<created>)
+     = TRUE
+   & !t = null
+   &   boolean::select(heap,
+                       t,
+                       java.lang.Object::<created>)
+     = TRUE
+   &   int::select(heap, acc, bank.Account::$balance)
+     = Z(0(2(#)))
+   &   boolean::select(heap,
+                       acc,
+                       bank.Account::$locked)
+     = FALSE
+   &   int::select(heap,
+                   acc,
+                   bank.Account::$unsuccessfulWithdraws)
+     = Z(0(#))
+   &   int::select(heap, t, bank.Transaction::$amount)
+     = Z(0(1(#)))
+   & wellFormedPair(heap, gHeap)
+   & java.lang.Object::<inv>(heap, gHeap, t)
+-> \<{
+     acc.withdraw(t)@bank.Account;
+   }\> (    int::select(heap,
+                        acc,
+                        bank.Account::$balance)
+          = Z(0(1(#)))
+        &   boolean::select(heap,
+                            acc,
+                            bank.Account::$locked)
+          = FALSE
+        &   int::select(heap,
+                        acc,
+                        bank.Account::$unsuccessfulWithdraws)
+          = Z(0(#))
+        &   bank.Transaction::select(gHeap,
+                                     acc,
+                                     bank.Account::$lastTransaction)
+          = t
+        &   boolean::select(gHeap,
+                            t,
+                            bank.Transaction::$success)
+          = TRUE)
+}
+
+\proof {
+(keyLog "0" (keyUser "Annie" ) (keyVersion "66fc99f47d3c94fe5dbf37dada114bebc81cf78c"))
+
+(autoModeTime "529")
+
+(branch "dummy ID"
+ (builtin "One Step Simplification" (formula "1") (newnames "heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,arg0AtPre,arg1AtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,arg0AtPre,arg1AtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,arg0AtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,vAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre"))
+(rule "impRight" (formula "1"))
+(rule "andLeft" (formula "1"))
+(rule "andLeft" (formula "1"))
+(rule "andLeft" (formula "1"))
+(rule "andLeft" (formula "1"))
+(rule "andLeft" (formula "1"))
+(rule "andLeft" (formula "1"))
+(rule "notLeft" (formula "3"))
+(rule "andLeft" (formula "1"))
+(rule "andLeft" (formula "1"))
+(rule "andLeft" (formula "1"))
+(rule "notLeft" (formula "3"))
+(rule "notLeft" (formula "1"))
+(rule "methodBodyExpand" (formula "11") (newnames "gHeapBefore_withdraw,heapBefore_withdraw,savedHeapBefore_withdraw,tBefore_withdraw"))
+(rule "ifUnfold" (formula "11") (term "1") (inst "#boolv=b"))
+(rule "variableDeclaration" (formula "11") (term "1") (newnames "b"))
+(rule "compound_assignment_3_nonsimple" (formula "11") (term "1"))
+(rule "ifElseUnfold" (formula "11") (term "1") (inst "#boolv=b_1"))
+(rule "variableDeclaration" (formula "11") (term "1") (newnames "b_1"))
+(rule "compound_assignment_2" (formula "11") (term "1") (inst "#v=b_2"))
+(rule "variableDeclarationAssign" (formula "11") (term "1"))
+(rule "variableDeclaration" (formula "11") (term "1") (newnames "b_2"))
+(rule "compound_greater_than_comparison_1" (formula "11") (term "1") (inst "#v0=i"))
+(rule "variableDeclarationAssign" (formula "11") (term "1"))
+(rule "variableDeclaration" (formula "11") (term "1") (newnames "i"))
+(rule "methodCallWithAssignment" (formula "11") (inst "#v0=i_1"))
+(branch "Normal Execution (t.getAmount() > 0 && !this.locked != null)"
+   (rule "variableDeclaration" (formula "11") (term "1") (newnames "i_1"))
+   (rule "methodBodyExpand" (formula "11") (term "1") (newnames "gHeapBefore_getAmount,heapBefore_getAmount,savedHeapBefore_getAmount"))
+    (builtin "One Step Simplification" (formula "11"))
+   (rule "returnUnfold" (formula "11") (term "1") (inst "#v0=i_2"))
+   (rule "variableDeclarationAssign" (formula "11") (term "1"))
+   (rule "variableDeclaration" (formula "11") (term "1") (newnames "i_2"))
+   (rule "assignment_read_attribute_this" (formula "11"))
+    (builtin "One Step Simplification" (formula "11"))
+   (rule "applyEq" (formula "11") (term "0,1,0") (ifseqformula "5"))
+   (rule "methodCallReturn" (formula "11") (term "1"))
+   (rule "assignment" (formula "11") (term "1"))
+    (builtin "One Step Simplification" (formula "11"))
+   (rule "methodCallEmpty" (formula "11") (term "1"))
+   (rule "blockEmpty" (formula "11") (term "1"))
+   (rule "assignment" (formula "11") (term "1"))
+    (builtin "One Step Simplification" (formula "11"))
+   (rule "greater_than_comparison_simple" (formula "11") (term "1"))
+    (builtin "One Step Simplification" (formula "11"))
+   (rule "greater_literals" (formula "11") (term "0,0,1,0"))
+    (builtin "One Step Simplification" (formula "11"))
+   (rule "compound_assignment_1_new" (formula "11") (term "1"))
+    (builtin "One Step Simplification" (formula "11"))
+   (rule "ifElseSplit" (formula "11"))
+   (branch "if !t.getAmount() > 0 true"
+       (builtin "One Step Simplification" (formula "12"))
+       (builtin "One Step Simplification" (formula "1"))
+      (rule "closeFalse" (formula "1"))
+   )
+   (branch "if !t.getAmount() > 0 false"
+       (builtin "One Step Simplification" (formula "12"))
+       (builtin "One Step Simplification" (formula "1"))
+      (rule "true_left" (formula "1"))
+      (rule "compound_assignment_2" (formula "11") (term "1") (inst "#v=b_3"))
+      (rule "variableDeclarationAssign" (formula "11") (term "1"))
+      (rule "variableDeclaration" (formula "11") (term "1") (newnames "b_3"))
+      (rule "assignment_read_attribute_this" (formula "11"))
+       (builtin "One Step Simplification" (formula "11"))
+      (rule "apply_eq_boolean" (formula "11") (term "0,1,0") (ifseqformula "10"))
+      (rule "compound_assignment_1_new" (formula "11") (term "1"))
+       (builtin "One Step Simplification" (formula "11"))
+      (rule "blockEmpty" (formula "11") (term "1"))
+      (rule "ifSplit" (formula "11"))
+      (branch "if t.getAmount() > 0 && !this.locked true"
+          (builtin "One Step Simplification" (formula "12"))
+          (builtin "One Step Simplification" (formula "1"))
+         (rule "true_left" (formula "1"))
+         (rule "ifUnfold" (formula "11") (term "1") (inst "#boolv=b_4"))
+         (rule "variableDeclaration" (formula "11") (term "1") (newnames "b_4"))
+         (rule "compound_greater_equal_than_comparison_2" (formula "11") (term "1") (inst "#v1=i_4") (inst "#v0=i_3"))
+         (rule "variableDeclarationAssign" (formula "11") (term "1"))
+         (rule "variableDeclaration" (formula "11") (term "1") (newnames "i_3"))
+         (rule "assignment_read_attribute_this" (formula "11"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "variableDeclarationAssign" (formula "11") (term "1"))
+         (rule "variableDeclaration" (formula "11") (term "1") (newnames "i_4"))
+         (rule "applyEq" (formula "11") (term "0,1,0") (ifseqformula "3"))
+         (rule "methodCallWithAssignment" (formula "11") (inst "#v0=i_5"))
+         (branch "Normal Execution (t.getAmount() > 0 && !this.locked != null)"
+            (rule "variableDeclaration" (formula "11") (term "1") (newnames "i_5"))
+            (rule "methodBodyExpand" (formula "11") (term "1") (newnames "gHeapBefore_getAmount_0,heapBefore_getAmount_0,savedHeapBefore_getAmount_0"))
+             (builtin "One Step Simplification" (formula "11"))
+            (rule "returnUnfold" (formula "11") (term "1") (inst "#v0=i_6"))
+            (rule "variableDeclarationAssign" (formula "11") (term "1"))
+            (rule "variableDeclaration" (formula "11") (term "1") (newnames "i_6"))
+            (rule "assignment_read_attribute_this" (formula "11"))
+             (builtin "One Step Simplification" (formula "11"))
+            (rule "applyEq" (formula "11") (term "0,1,0") (ifseqformula "5"))
+            (rule "methodCallReturn" (formula "11") (term "1"))
+            (rule "assignment" (formula "11") (term "1"))
+             (builtin "One Step Simplification" (formula "11"))
+            (rule "methodCallEmpty" (formula "11") (term "1"))
+            (rule "blockEmpty" (formula "11") (term "1"))
+            (rule "assignment" (formula "11") (term "1"))
+             (builtin "One Step Simplification" (formula "11"))
+            (rule "greater_equal_than_comparison_simple" (formula "11") (term "1"))
+             (builtin "One Step Simplification" (formula "11"))
+            (rule "qeq_literals" (formula "11") (term "0,0,1,0"))
+             (builtin "One Step Simplification" (formula "11"))
+            (rule "ifSplit" (formula "11"))
+            (branch "if this.balance >= t.getAmount() true"
+                (builtin "One Step Simplification" (formula "12"))
+                (builtin "One Step Simplification" (formula "1"))
+               (rule "true_left" (formula "1"))
+               (rule "eval_order_access4_this" (formula "11") (term "1") (inst "#v1=i_7"))
+               (rule "variableDeclarationAssign" (formula "11") (term "1"))
+               (rule "variableDeclaration" (formula "11") (term "1") (newnames "i_7"))
+               (rule "compound_subtraction_2" (formula "11") (term "1") (inst "#v1=i_9") (inst "#v0=i_8"))
+               (rule "variableDeclarationAssign" (formula "11") (term "1"))
+               (rule "variableDeclaration" (formula "11") (term "1") (newnames "i_8"))
+               (rule "assignment_read_attribute_this" (formula "11"))
+                (builtin "One Step Simplification" (formula "11"))
+               (rule "variableDeclarationAssign" (formula "11") (term "1"))
+               (rule "variableDeclaration" (formula "11") (term "1") (newnames "i_9"))
+               (rule "applyEq" (formula "11") (term "0,1,0") (ifseqformula "3"))
+               (rule "methodCallWithAssignment" (formula "11") (inst "#v0=i_10"))
+               (branch "Normal Execution (t.getAmount() > 0 && !this.locked != null)"
+                  (rule "variableDeclaration" (formula "11") (term "1") (newnames "i_10"))
+                  (rule "methodBodyExpand" (formula "11") (term "1") (newnames "gHeapBefore_getAmount_1,heapBefore_getAmount_1,savedHeapBefore_getAmount_1"))
+                   (builtin "One Step Simplification" (formula "11"))
+                  (rule "returnUnfold" (formula "11") (term "1") (inst "#v0=i_11"))
+                  (rule "variableDeclarationAssign" (formula "11") (term "1"))
+                  (rule "variableDeclaration" (formula "11") (term "1") (newnames "i_11"))
+                  (rule "assignment_read_attribute_this" (formula "11"))
+                   (builtin "One Step Simplification" (formula "11"))
+                  (rule "applyEq" (formula "11") (term "0,1,0") (ifseqformula "5"))
+                  (rule "methodCallReturn" (formula "11") (term "1"))
+                  (rule "assignment" (formula "11") (term "1"))
+                   (builtin "One Step Simplification" (formula "11"))
+                  (rule "methodCallEmpty" (formula "11") (term "1"))
+                  (rule "blockEmpty" (formula "11") (term "1"))
+                  (rule "assignment" (formula "11") (term "1"))
+                   (builtin "One Step Simplification" (formula "11"))
+                  (rule "assignmentSubtractionInt" (formula "11") (term "1"))
+                   (builtin "One Step Simplification" (formula "11"))
+                  (rule "translateJavaSubInt" (formula "11") (term "0,1,0"))
+                  (rule "sub_literals" (formula "11") (term "0,1,0"))
+                  (rule "assignment_write_attribute_this" (formula "11"))
+                   (builtin "One Step Simplification" (formula "11"))
+                  (rule "assignment_write_attribute_this" (formula "11"))
+                   (builtin "One Step Simplification" (formula "11"))
+                   (builtin "Set Statement" (formula "11"))
+                   (builtin "One Step Simplification" (formula "11"))
+                  (rule "polySimp_addComm0" (formula "11") (term "3,0,1,0"))
+                   (builtin "Set Statement" (formula "11"))
+                   (builtin "One Step Simplification" (formula "11"))
+                   (builtin "Set Statement" (formula "11"))
+                   (builtin "One Step Simplification" (formula "11"))
+                  (rule "blockReturn" (formula "11") (term "1"))
+                  (rule "blockReturn" (formula "11") (term "1"))
+                   (builtin "One Step Simplification" (formula "11"))
+                  (rule "methodCallReturnIgnoreResult" (formula "11") (term "1"))
+                  (rule "emptyModality" (formula "11") (term "1"))
+                   (builtin "One Step Simplification" (formula "11"))
+                  (rule "dismissNonSelectedField" (formula "11") (term "0,1,0"))
+                  (rule "dismissNonSelectedField" (formula "11") (term "0,0,0,0,0"))
+                  (rule "dismissNonSelectedField" (formula "11") (term "0,0,1,0,0,0"))
+                  (rule "dismissNonSelectedField" (formula "11") (term "0,0,1,0,0,0"))
+                  (rule "replace_known_right" (formula "11") (term "0,1,0,0,0") (ifseqformula "10"))
+                   (builtin "One Step Simplification" (formula "11"))
+                  (rule "pullOutSelect" (formula "11") (term "0,0,0,0") (inst "selectSK=bank_Account_balance_0"))
+                  (rule "simplifySelectOfStore" (formula "1"))
+                   (builtin "One Step Simplification" (formula "1"))
+                  (rule "castDel" (formula "1") (term "0"))
+                  (rule "applyEqReverse" (formula "12") (term "0,0,0,0") (ifseqformula "1"))
+                   (builtin "One Step Simplification" (formula "12"))
+                  (rule "hideAuxiliaryEq" (formula "1"))
+                  (rule "pullOutSelect" (formula "11") (term "0,1,0") (inst "selectSK=bank_Account_lastTransaction_0"))
+                  (rule "simplifySelectOfStore" (formula "1"))
+                   (builtin "One Step Simplification" (formula "1"))
+                  (rule "castDel" (formula "1") (term "0"))
+                  (rule "applyEqReverse" (formula "12") (term "0,1,0") (ifseqformula "1"))
+                   (builtin "One Step Simplification" (formula "12"))
+                  (rule "hideAuxiliaryEq" (formula "1"))
+                  (rule "pullOutSelect" (formula "11") (term "0,0") (inst "selectSK=bank_Account_unsuccessfulWithdraws_0"))
+                  (rule "simplifySelectOfStore" (formula "1"))
+                   (builtin "One Step Simplification" (formula "1"))
+                  (rule "castDel" (formula "1") (term "0"))
+                  (rule "applyEqReverse" (formula "12") (term "0,0") (ifseqformula "1"))
+                   (builtin "One Step Simplification" (formula "12"))
+                  (rule "hideAuxiliaryEq" (formula "1"))
+                  (rule "pullOutSelect" (formula "11") (term "0") (inst "selectSK=bank_Transaction_success_0"))
+                  (rule "simplifySelectOfStore" (formula "1"))
+                   (builtin "One Step Simplification" (formula "1"))
+                  (rule "castDel" (formula "1") (term "0"))
+                  (rule "applyEqReverse" (formula "12") (term "0") (ifseqformula "1"))
+                   (builtin "One Step Simplification" (formula "12"))
+                  (rule "closeTrue" (formula "12"))
+               )
+               (branch "Null Reference (t.getAmount() > 0 && !this.locked = null)"
+                  (rule "false_right" (formula "12"))
+                   (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "10")))
+                  (rule "closeFalse" (formula "1"))
+               )
+            )
+            (branch "if this.balance >= t.getAmount() false"
+                (builtin "One Step Simplification" (formula "12"))
+                (builtin "One Step Simplification" (formula "1"))
+               (rule "closeFalse" (formula "1"))
+            )
+         )
+         (branch "Null Reference (t.getAmount() > 0 && !this.locked = null)"
+             (builtin "One Step Simplification" (formula "12"))
+             (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "10")))
+            (rule "closeFalse" (formula "1"))
+         )
+      )
+      (branch "if t.getAmount() > 0 && !this.locked false"
+          (builtin "One Step Simplification" (formula "12"))
+          (builtin "One Step Simplification" (formula "1"))
+         (rule "closeFalse" (formula "1"))
+      )
+   )
+)
+(branch "Null Reference (t.getAmount() > 0 && !this.locked = null)"
+    (builtin "One Step Simplification" (formula "12"))
+    (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "10")))
+   (rule "closeFalse" (formula "1"))
+)
+)
+}

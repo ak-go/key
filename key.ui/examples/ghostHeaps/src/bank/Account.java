@@ -84,7 +84,8 @@ public class Account {
     @   ensures amount > 0 && \old(this.balance) >= amount && !locked
     @       ==> balance == \old(balance) - amount;
     @*/
-    public void sendAmount(Account otherAcc, int amount){
+    public void sendAmount(int amount){
+        Account otherAcc = new Account();
         Transaction t = new Transaction(amount);
         boolean success = this.withdraw(t);
         if(success) otherAcc.deposit(t);
