@@ -132,7 +132,7 @@ public class QueryExpand implements BuiltInRule {
 
         KeYJavaType calleeType = services.getJavaInfo().getKeYJavaType(query.arity() == 1 ? // static
                                                                                             // query
-                query.sort() : query.sub(1).sort());
+                query.sort() : query.sub(2).sort());
         KeYJavaType progResultType = method.getReturnType();
 
 
@@ -204,7 +204,7 @@ public class QueryExpand implements BuiltInRule {
         Term update =
             tb.elementary(services.getTypeConverter().getHeapLDT().getHeap(), query.sub(0));
         if (callee != null) {
-            update = tb.parallel(tb.elementary(tb.var(callee), query.sub(1)), update);
+            update = tb.parallel(tb.elementary(tb.var(callee), query.sub(2)), update);
         }
 
         final Term[] argUpdates = new Term[args.size()];
@@ -338,14 +338,14 @@ public class QueryExpand implements BuiltInRule {
             findQueriesAndEvaluationPositions(t.sub(0), nextLevel, pathInTerm, instVars,
                 curPosIsPositive, qepLevel, qepIsPositive, qeps);
             pathInTerm[nextLevel] = 1;
-            findQueriesAndEvaluationPositions(t.sub(1), nextLevel, pathInTerm, instVars,
+            findQueriesAndEvaluationPositions(t.sub(2), nextLevel, pathInTerm, instVars,
                 curPosIsPositive, qepLevel, qepIsPositive, qeps);
         } else if (op == Junctor.IMP) {
             pathInTerm[nextLevel] = 0;
             findQueriesAndEvaluationPositions(t.sub(0), nextLevel, pathInTerm, instVars,
                 !curPosIsPositive, qepLevel, qepIsPositive, qeps);
             pathInTerm[nextLevel] = 1;
-            findQueriesAndEvaluationPositions(t.sub(1), nextLevel, pathInTerm, instVars,
+            findQueriesAndEvaluationPositions(t.sub(2), nextLevel, pathInTerm, instVars,
                 curPosIsPositive, qepLevel, qepIsPositive, qeps);
         } else if (op == Junctor.NOT) {
             pathInTerm[nextLevel] = 0;
@@ -622,8 +622,8 @@ public class QueryExpand implements BuiltInRule {
             }
             final Sort nullSort = goal.proof().getJavaInfo().nullSort();
             if (pm.isStatic()
-                    || (pmTerm.sub(1).sort().extendsTrans(goal.proof().getJavaInfo().objectSort())
-                            && !pmTerm.sub(1).sort().extendsTrans(nullSort))) {
+                    || (pmTerm.sub(2).sort().extendsTrans(goal.proof().getJavaInfo().objectSort())
+                            && !pmTerm.sub(2).sort().extendsTrans(nullSort))) {
                 PIOPathIterator it = pio.iterator();
                 while (it.next() != -1) {
                     Term focus = it.getSubTerm();

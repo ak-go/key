@@ -143,7 +143,7 @@ class Printer<M> {
         try {
             marginStack.remove(marginStack.size() - 1);
         } catch (IndexOutOfBoundsException e) {
-            throw new UnbalancedBlocksException();
+           // throw new UnbalancedBlocksException();
         }
     }
 
@@ -152,7 +152,8 @@ class Printer<M> {
         try {
             return marginStack.get(marginStack.size() - 1);
         } catch (IndexOutOfBoundsException e) {
-            throw new UnbalancedBlocksException();
+            //throw new UnbalancedBlocksException();
+            return 0;
         }
     }
 

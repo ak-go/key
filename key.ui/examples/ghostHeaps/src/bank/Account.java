@@ -78,7 +78,11 @@ public class Account {
         }
     }
 
-    public /*@ pure */ Transaction newTransaction(){
+    /*@ public normal_behavior
+      @ requires true;
+      @ ensures \fresh(\result) && \result.success;
+      @*/
+    public /*@ pure helper */ Transaction newTransaction(){
         return new Transaction(0);
     }
 
