@@ -2,7 +2,6 @@ package bank;
 
 public class Transaction {
     //@ ghost public boolean success = true;
-
     private /*@ spec_public @*/ int amount;
 
     /*@ public normal_behavior

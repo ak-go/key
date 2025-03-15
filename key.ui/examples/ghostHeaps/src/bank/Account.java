@@ -11,12 +11,14 @@ public class Account {
 
     /*@ public normal_behavior
     @   requires t.amount > 0;
-    @   assignable balance;
-    @   ensures balance == \old(balance) + t.amount;
+    @   assignable balance, lastTransaction;
+    @   ensures balance == \old(balance) + t.amount && lastTransaction == t;
     @*/
     public void deposit(Transaction t) {
-        if (t.getAmount() > 0) balance = balance + t.getAmount();
-        //@ set lastTransaction = t;
+        if (t.getAmount() > 0) {
+            balance = balance + t.getAmount();
+            //@ set lastTransaction = t;
+        }
     }
 
     /*@ public normal_behavior
