@@ -21,6 +21,7 @@
         "reach" : "reach:on",
         "runtimeExceptions" : "runtimeExceptions:ban",
         "sequences" : "sequences:on",
+        "soundDefaultContracts" : "soundDefaultContracts:on",
         "wdChecks" : "wdChecks:off",
         "wdOperator" : "wdOperator:L"
      },
@@ -80,8 +81,6 @@
     bank.Account acc;
     bank.Transaction t;
 }
-
-\include "ghostHeapRules.key";
 \problem {
      !acc = null
    &   boolean::select(heap,
@@ -105,8 +104,8 @@
      = Z(0(#))
    &   int::select(heap, t, bank.Transaction::$amount)
      = Z(0(1(#)))
-   & wellFormedPair(heap, gHeap)
-   & java.lang.Object::<inv>(heap, gHeap, t)
+   & wellFormed(heap)
+   & java.lang.Object::<inv>(heap, t)
 -> \<{
      acc.withdraw(t)@bank.Account;
    }\> (    int::select(heap,
@@ -121,23 +120,23 @@
                         acc,
                         bank.Account::$unsuccessfulWithdraws)
           = Z(0(#))
-        &   bank.Transaction::select(gHeap,
+        &   bank.Transaction::select(heap,
                                      acc,
                                      bank.Account::$lastTransaction)
           = t
-        &   boolean::select(gHeap,
+        &   boolean::select(heap,
                             t,
                             bank.Transaction::$success)
           = TRUE)
 }
 
 \proof {
-(keyLog "0" (keyUser "Annie" ) (keyVersion "66fc99f47d3c94fe5dbf37dada114bebc81cf78c"))
+(keyLog "0" (keyUser "Annie" ) (keyVersion "8e284394d2e0d70dc54fe684ec9c707b6f60a7df"))
 
-(autoModeTime "306")
+(autoModeTime "127")
 
 (branch "dummy ID"
- (builtin "One Step Simplification" (formula "1") (newnames "heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,arg0AtPre,arg1AtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,arg0AtPre,arg1AtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,arg0AtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,vAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre"))
+ (builtin "One Step Simplification" (formula "1") (newnames "heapAtPre,savedHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,arg0AtPre,arg1AtPre,heapAtPre,savedHeapAtPre,arg0AtPre,arg1AtPre,heapAtPre,savedHeapAtPre,arg0AtPre,heapAtPre,savedHeapAtPre,vAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre"))
 (rule "impRight" (formula "1"))
 (rule "andLeft" (formula "1"))
 (rule "andLeft" (formula "1"))
@@ -151,7 +150,7 @@
 (rule "andLeft" (formula "1"))
 (rule "notLeft" (formula "3"))
 (rule "notLeft" (formula "1"))
-(rule "methodBodyExpand" (formula "11") (newnames "gHeapBefore_withdraw,heapBefore_withdraw,savedHeapBefore_withdraw,tBefore_withdraw"))
+(rule "methodBodyExpand" (formula "11") (newnames "heapBefore_withdraw,savedHeapBefore_withdraw,tBefore_withdraw"))
 (rule "ifUnfold" (formula "11") (term "1") (inst "#boolv=b"))
 (rule "variableDeclaration" (formula "11") (term "1") (newnames "b"))
 (rule "compound_assignment_3_nonsimple" (formula "11") (term "1"))
@@ -166,7 +165,7 @@
 (rule "methodCallWithAssignment" (formula "11") (inst "#v0=i_1"))
 (branch "Normal Execution (t.getAmount() > 0 && !this.locked != null)"
    (rule "variableDeclaration" (formula "11") (term "1") (newnames "i_1"))
-   (rule "methodBodyExpand" (formula "11") (term "1") (newnames "gHeapBefore_getAmount,heapBefore_getAmount,savedHeapBefore_getAmount"))
+   (rule "methodBodyExpand" (formula "11") (term "1") (newnames "heapBefore_getAmount,savedHeapBefore_getAmount"))
     (builtin "One Step Simplification" (formula "11"))
    (rule "returnUnfold" (formula "11") (term "1") (inst "#v0=i_2"))
    (rule "variableDeclarationAssign" (formula "11") (term "1"))
@@ -224,7 +223,7 @@
          (rule "methodCallWithAssignment" (formula "11") (inst "#v0=i_5"))
          (branch "Normal Execution (t.getAmount() > 0 && !this.locked != null)"
             (rule "variableDeclaration" (formula "11") (term "1") (newnames "i_5"))
-            (rule "methodBodyExpand" (formula "11") (term "1") (newnames "gHeapBefore_getAmount_0,heapBefore_getAmount_0,savedHeapBefore_getAmount_0"))
+            (rule "methodBodyExpand" (formula "11") (term "1") (newnames "heapBefore_getAmount_0,savedHeapBefore_getAmount_0"))
              (builtin "One Step Simplification" (formula "11"))
             (rule "returnUnfold" (formula "11") (term "1") (inst "#v0=i_6"))
             (rule "variableDeclarationAssign" (formula "11") (term "1"))
@@ -245,8 +244,8 @@
              (builtin "One Step Simplification" (formula "11"))
             (rule "ifSplit" (formula "11"))
             (branch "if this.balance >= t.getAmount() true"
-                (builtin "One Step Simplification" (formula "12"))
                 (builtin "One Step Simplification" (formula "1"))
+                (builtin "One Step Simplification" (formula "12"))
                (rule "true_left" (formula "1"))
                (rule "eval_order_access4_this" (formula "11") (term "1") (inst "#v1=i_7"))
                (rule "variableDeclarationAssign" (formula "11") (term "1"))
@@ -262,7 +261,7 @@
                (rule "methodCallWithAssignment" (formula "11") (inst "#v0=i_10"))
                (branch "Normal Execution (t.getAmount() > 0 && !this.locked != null)"
                   (rule "variableDeclaration" (formula "11") (term "1") (newnames "i_10"))
-                  (rule "methodBodyExpand" (formula "11") (term "1") (newnames "gHeapBefore_getAmount_1,heapBefore_getAmount_1,savedHeapBefore_getAmount_1"))
+                  (rule "methodBodyExpand" (formula "11") (term "1") (newnames "heapBefore_getAmount_1,savedHeapBefore_getAmount_1"))
                    (builtin "One Step Simplification" (formula "11"))
                   (rule "returnUnfold" (formula "11") (term "1") (inst "#v0=i_11"))
                   (rule "variableDeclarationAssign" (formula "11") (term "1"))
@@ -288,6 +287,8 @@
                    (builtin "Set Statement" (formula "11"))
                    (builtin "One Step Simplification" (formula "11"))
                   (rule "polySimp_addComm0" (formula "11") (term "3,0,1,0"))
+                  (rule "dismissNonSelectedField" (formula "11") (term "1,3,0,1,0"))
+                  (rule "dismissNonSelectedField" (formula "11") (term "1,3,0,1,0"))
                    (builtin "Set Statement" (formula "11"))
                    (builtin "One Step Simplification" (formula "11"))
                    (builtin "Set Statement" (formula "11"))
@@ -298,7 +299,16 @@
                   (rule "methodCallReturnIgnoreResult" (formula "11") (term "1"))
                   (rule "emptyModality" (formula "11") (term "1"))
                    (builtin "One Step Simplification" (formula "11"))
+                  (rule "dismissNonSelectedField" (formula "11") (term "0,0,0,0,0"))
+                  (rule "dismissNonSelectedField" (formula "11") (term "0,1,0,0"))
+                  (rule "dismissNonSelectedField" (formula "11") (term "0,0,1,0,0,0"))
                   (rule "dismissNonSelectedField" (formula "11") (term "0,1,0"))
+                  (rule "dismissNonSelectedField" (formula "11") (term "0,0,0,0,0"))
+                  (rule "dismissNonSelectedField" (formula "11") (term "0,1,0,0"))
+                  (rule "dismissNonSelectedField" (formula "11") (term "0,0,1,0,0,0"))
+                  (rule "dismissNonSelectedField" (formula "11") (term "0,0,0,0,0"))
+                  (rule "dismissNonSelectedField" (formula "11") (term "0,1,0,0"))
+                  (rule "dismissNonSelectedField" (formula "11") (term "0,0,1,0,0,0"))
                   (rule "dismissNonSelectedField" (formula "11") (term "0,0,0,0,0"))
                   (rule "dismissNonSelectedField" (formula "11") (term "0,0,1,0,0,0"))
                   (rule "dismissNonSelectedField" (formula "11") (term "0,0,1,0,0,0"))
@@ -311,21 +321,21 @@
                   (rule "applyEqReverse" (formula "12") (term "0,0,0,0") (ifseqformula "1"))
                    (builtin "One Step Simplification" (formula "12"))
                   (rule "hideAuxiliaryEq" (formula "1"))
-                  (rule "pullOutSelect" (formula "11") (term "0,1,0") (inst "selectSK=bank_Account_lastTransaction_0"))
+                  (rule "pullOutSelect" (formula "11") (term "0,1") (inst "selectSK=bank_Transaction_success_0"))
                   (rule "simplifySelectOfStore" (formula "1"))
                    (builtin "One Step Simplification" (formula "1"))
                   (rule "castDel" (formula "1") (term "0"))
-                  (rule "applyEqReverse" (formula "12") (term "0,1,0") (ifseqformula "1"))
+                  (rule "applyEqReverse" (formula "12") (term "0,1") (ifseqformula "1"))
                    (builtin "One Step Simplification" (formula "12"))
                   (rule "hideAuxiliaryEq" (formula "1"))
-                  (rule "pullOutSelect" (formula "11") (term "0,0") (inst "selectSK=bank_Account_unsuccessfulWithdraws_0"))
+                  (rule "pullOutSelect" (formula "11") (term "0,1") (inst "selectSK=bank_Account_lastTransaction_0"))
                   (rule "simplifySelectOfStore" (formula "1"))
                    (builtin "One Step Simplification" (formula "1"))
                   (rule "castDel" (formula "1") (term "0"))
-                  (rule "applyEqReverse" (formula "12") (term "0,0") (ifseqformula "1"))
+                  (rule "applyEqReverse" (formula "12") (term "0,1") (ifseqformula "1"))
                    (builtin "One Step Simplification" (formula "12"))
                   (rule "hideAuxiliaryEq" (formula "1"))
-                  (rule "pullOutSelect" (formula "11") (term "0") (inst "selectSK=bank_Transaction_success_0"))
+                  (rule "pullOutSelect" (formula "11") (term "0") (inst "selectSK=bank_Account_unsuccessfulWithdraws_0"))
                   (rule "simplifySelectOfStore" (formula "1"))
                    (builtin "One Step Simplification" (formula "1"))
                   (rule "castDel" (formula "1") (term "0"))
@@ -334,13 +344,12 @@
                   (rule "closeTrue" (formula "12"))
                )
                (branch "Null Reference (t.getAmount() > 0 && !this.locked = null)"
-                  (rule "false_right" (formula "12"))
+                   (builtin "One Step Simplification" (formula "12"))
                    (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "10")))
                   (rule "closeFalse" (formula "1"))
                )
             )
             (branch "if this.balance >= t.getAmount() false"
-                (builtin "One Step Simplification" (formula "12"))
                 (builtin "One Step Simplification" (formula "1"))
                (rule "closeFalse" (formula "1"))
             )

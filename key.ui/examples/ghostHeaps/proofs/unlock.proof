@@ -1,0 +1,437 @@
+\profile "Java Profile";
+
+\settings // Proof-Settings-Config-File
+{ 
+    "Choice" : { 
+        "JavaCard" : "JavaCard:off",
+        "Strings" : "Strings:on",
+        "assertions" : "assertions:safe",
+        "bigint" : "bigint:on",
+        "floatRules" : "floatRules:strictfpOnly",
+        "initialisation" : "initialisation:disableStaticInitialisation",
+        "intRules" : "intRules:arithmeticSemanticsIgnoringOF",
+        "integerSimplificationRules" : "integerSimplificationRules:full",
+        "javaLoopTreatment" : "javaLoopTreatment:efficient",
+        "mergeGenerateIsWeakeningGoal" : "mergeGenerateIsWeakeningGoal:off",
+        "methodExpansion" : "methodExpansion:noRestriction",
+        "modelFields" : "modelFields:treatAsAxiom",
+        "moreSeqRules" : "moreSeqRules:off",
+        "permissions" : "permissions:off",
+        "programRules" : "programRules:Java",
+        "reach" : "reach:on",
+        "runtimeExceptions" : "runtimeExceptions:ban",
+        "sequences" : "sequences:on",
+        "wdChecks" : "wdChecks:off",
+        "wdOperator" : "wdOperator:L"
+     },
+    "Labels" : { 
+        "UseOriginLabels" : true
+     },
+    "NewSMT" : { 
+        
+     },
+    "SMTSettings" : { 
+        "SelectedTaclets" : [ 
+            
+         ],
+        "UseBuiltUniqueness" : false,
+        "explicitTypeHierarchy" : false,
+        "instantiateHierarchyAssumptions" : true,
+        "integersMaximum" : 2147483645,
+        "integersMinimum" : -2147483645,
+        "invariantForall" : false,
+        "maxGenericSorts" : 2,
+        "useConstantsForBigOrSmallIntegers" : true,
+        "useUninterpretedMultiplication" : true
+     },
+    "Strategy" : { 
+        "ActiveStrategy" : "JavaCardDLStrategy",
+        "MaximumNumberOfAutomaticApplications" : 10000,
+        "Timeout" : -1,
+        "options" : { 
+            "AUTO_INDUCTION_OPTIONS_KEY" : "AUTO_INDUCTION_OFF",
+            "BLOCK_OPTIONS_KEY" : "BLOCK_CONTRACT_INTERNAL",
+            "CLASS_AXIOM_OPTIONS_KEY" : "CLASS_AXIOM_FREE",
+            "DEP_OPTIONS_KEY" : "DEP_ON",
+            "INF_FLOW_CHECK_PROPERTY" : "INF_FLOW_CHECK_FALSE",
+            "LOOP_OPTIONS_KEY" : "LOOP_SCOPE_INV_TACLET",
+            "METHOD_OPTIONS_KEY" : "METHOD_EXPAND",
+            "MPS_OPTIONS_KEY" : "MPS_MERGE",
+            "NON_LIN_ARITH_OPTIONS_KEY" : "NON_LIN_ARITH_NONE",
+            "OSS_OPTIONS_KEY" : "OSS_ON",
+            "QUANTIFIERS_OPTIONS_KEY" : "QUANTIFIERS_NON_SPLITTING_WITH_PROGS",
+            "QUERYAXIOM_OPTIONS_KEY" : "QUERYAXIOM_ON",
+            "QUERY_NEW_OPTIONS_KEY" : "QUERY_ON",
+            "SPLITTING_OPTIONS_KEY" : "SPLITTING_DELAYED",
+            "STOPMODE_OPTIONS_KEY" : "STOPMODE_DEFAULT",
+            "SYMBOLIC_EXECUTION_ALIAS_CHECK_OPTIONS_KEY" : "SYMBOLIC_EXECUTION_ALIAS_CHECK_NEVER",
+            "SYMBOLIC_EXECUTION_NON_EXECUTION_BRANCH_HIDING_OPTIONS_KEY" : "SYMBOLIC_EXECUTION_NON_EXECUTION_BRANCH_HIDING_OFF",
+            "USER_TACLETS_OPTIONS_KEY1" : "USER_TACLETS_OFF",
+            "USER_TACLETS_OPTIONS_KEY2" : "USER_TACLETS_OFF",
+            "USER_TACLETS_OPTIONS_KEY3" : "USER_TACLETS_OFF",
+            "VBT_PHASE" : "VBT_SYM_EX"
+         }
+     }
+ } 
+
+\javaSource "src";
+
+\programVariables{
+    bank.Account acc;
+}
+
+\include "ghostHeapRules.key";
+\problem {
+     !acc = null
+   &   boolean::select(heap,
+                       acc,
+                       java.lang.Object::<created>)
+     = TRUE
+   & bank.Account::exactInstance(acc) = TRUE
+   &   boolean::select(heap,
+                       acc,
+                       bank.Account::$locked)
+     = TRUE
+   &   int::select(heap,
+                   acc,
+                   bank.Account::$unsuccessfulWithdraws)
+     = Z(2(#))
+   & java.lang.Object::<inv>(heap, gHeap, acc)
+   & wellFormedPair(heap, gHeap)
+-> \<{
+     acc.unlock()@bank.Account;
+   }\> (    boolean::select(heap,
+                            acc,
+                            bank.Account::$locked)
+          = FALSE
+        &   int::select(heap,
+                        acc,
+                        bank.Account::$unsuccessfulWithdraws)
+          = Z(0(#))
+        & !  bank.Transaction::select(gHeap,
+                                      acc,
+                                      bank.Account::$lastTransaction)
+           = null
+        &   boolean::select(gHeap,
+                            bank.Transaction::select(gHeap,
+                                                     acc,
+                                                     bank.Account::$lastTransaction),
+                            bank.Transaction::$success)
+          = TRUE)
+}
+
+\proof {
+(keyLog "0" (keyUser "Annie" ) (keyVersion "66fc99f47d3c94fe5dbf37dada114bebc81cf78c"))
+
+(autoModeTime "200")
+
+(branch "dummy ID"
+ (builtin "One Step Simplification" (formula "1") (newnames "heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,arg0AtPre,arg1AtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,arg0AtPre,arg1AtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,arg0AtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,vAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre"))
+(rule "impRight" (formula "1"))
+(rule "andLeft" (formula "1"))
+(rule "andLeft" (formula "1"))
+(rule "andLeft" (formula "1"))
+(rule "andLeft" (formula "1"))
+(rule "andLeft" (formula "1"))
+(rule "andLeft" (formula "1"))
+(rule "notLeft" (formula "1"))
+(rule "methodBodyExpand" (formula "8") (newnames "gHeapBefore_unlock,heapBefore_unlock,savedHeapBefore_unlock"))
+(rule "ifUnfold" (formula "8") (term "1") (inst "#boolv=b"))
+(rule "variableDeclaration" (formula "8") (term "1") (newnames "b"))
+(rule "assignment_read_attribute_this" (formula "8"))
+ (builtin "One Step Simplification" (formula "8"))
+(rule "applyEq" (formula "8") (term "0,1,0") (ifseqformula "3"))
+(rule "ifSplit" (formula "8"))
+(branch "if this.locked true"
+    (builtin "One Step Simplification" (formula "9"))
+    (builtin "One Step Simplification" (formula "1"))
+   (rule "true_left" (formula "1"))
+   (rule "assignment_write_attribute_this" (formula "8"))
+    (builtin "One Step Simplification" (formula "8"))
+   (rule "assignment_write_attribute_this" (formula "8"))
+    (builtin "One Step Simplification" (formula "8"))
+    (builtin "Set Statement" (formula "8"))
+    (builtin "One Step Simplification" (formula "8"))
+   (rule "emptyStatement" (formula "8") (term "1"))
+   (rule "methodCallEmpty" (formula "8") (term "1"))
+   (rule "emptyModality" (formula "8") (term "1"))
+    (builtin "One Step Simplification" (formula "8"))
+   (rule "dismissNonSelectedField" (formula "8") (term "0,1,0,0"))
+   (rule "dismissNonSelectedField" (formula "8") (term "0,1"))
+   (rule "pullOutSelect" (formula "8") (term "0,0,0,0,0") (inst "selectSK=bank_Account_locked_0"))
+   (rule "simplifySelectOfStore" (formula "1"))
+    (builtin "One Step Simplification" (formula "1"))
+   (rule "castDel" (formula "1") (term "0"))
+   (rule "applyEqReverse" (formula "9") (term "0,0,0,0,0") (ifseqformula "1"))
+    (builtin "One Step Simplification" (formula "9"))
+   (rule "hideAuxiliaryEq" (formula "1"))
+   (rule "pullOutSelect" (formula "8") (term "1,0,1") (inst "selectSK=bank_Account_lastTransaction_0"))
+   (rule "applyEq" (formula "9") (term "0,0,1,0") (ifseqformula "1"))
+   (rule "simplifySelectOfStore" (formula "1"))
+    (builtin "One Step Simplification" (formula "1"))
+   (rule "castDel" (formula "1") (term "0"))
+   (rule "applyEqReverse" (formula "9") (term "1,0,1") (ifseqformula "1"))
+   (rule "applyEqReverse" (formula "9") (term "0,0,1,0") (ifseqformula "1"))
+   (rule "hideAuxiliaryEq" (formula "1"))
+   (rule "pullOutSelect" (formula "8") (term "0,0,0") (inst "selectSK=bank_Account_unsuccessfulWithdraws_0"))
+   (rule "simplifySelectOfStore" (formula "1"))
+    (builtin "One Step Simplification" (formula "1"))
+   (rule "castDel" (formula "1") (term "0"))
+   (rule "applyEqReverse" (formula "9") (term "0,0,0") (ifseqformula "1"))
+    (builtin "One Step Simplification" (formula "9"))
+   (rule "hideAuxiliaryEq" (formula "1"))
+   (rule "cut_direct" (formula "8") (term "0,0"))
+   (branch "CUT: bank.Account::newTransaction(store(store(heap, acc, bank.Account::$unsuccessfulWithdraws, Z(0(#))), acc, bank.Account::$locked, FALSE), gHeap, acc) = null TRUE"
+       (builtin "One Step Simplification" (formula "9"))
+      (rule "false_right" (formula "9"))
+      (rule "onlyCreatedObjectsAreObserved" (formula "1") (term "0"))
+      (rule "replace_known_left" (formula "1") (term "0") (ifseqformula "2"))
+       (builtin "One Step Simplification" (formula "1"))
+      (rule "true_left" (formula "1"))
+       (builtin "Evaluate Query" (formula "1") (term "0") (newnames "callee,queryResult,res_newTransaction"))
+      (rule "replaceKnownQuery00_6" (formula "2") (term "0"))
+      (rule "notLeft" (formula "1"))
+      (rule "eqSymm" (formula "8") (term "0,0,1"))
+      (rule "variableDeclaration" (formula "8") (term "1") (newnames "queryResult"))
+      (rule "applyEqRigid" (formula "8") (term "0,0,0,1") (ifseqformula "1"))
+      (rule "eqSymm" (formula "8") (term "0,0,1"))
+      (rule "methodCallWithAssignment" (formula "8") (inst "#v0=t"))
+      (branch "Normal Execution (callee != null)"
+         (rule "variableDeclaration" (formula "8") (term "1") (newnames "t"))
+         (rule "methodBodyExpand" (formula "8") (term "1") (newnames "gHeapBefore_newTransaction,heapBefore_newTransaction,savedHeapBefore_newTransaction"))
+          (builtin "One Step Simplification" (formula "8"))
+         (rule "returnUnfold" (formula "8") (term "1") (inst "#v0=t_1"))
+         (rule "variableDeclarationAssign" (formula "8") (term "1"))
+         (rule "variableDeclaration" (formula "8") (term "1") (newnames "t_1"))
+         (rule "instanceCreationAssignment" (formula "8") (term "1") (inst "#v0=t_2"))
+         (rule "variableDeclarationAssign" (formula "8") (term "1"))
+         (rule "variableDeclaration" (formula "8") (term "1") (newnames "t_2"))
+         (rule "staticMethodCallStaticWithAssignmentViaTypereference" (formula "8") (term "1") (inst "#v0=t_3"))
+         (rule "variableDeclaration" (formula "8") (term "1") (newnames "t_3"))
+         (rule "methodBodyExpand" (formula "8") (term "1") (newnames "gHeapBefore_<createObject>,heapBefore_<createObject>,savedHeapBefore_<createObject>"))
+          (builtin "One Step Simplification" (formula "8"))
+         (rule "variableDeclaration" (formula "8") (term "1") (newnames "__NEW__"))
+         (rule "staticMethodCallStaticWithAssignmentViaTypereference" (formula "8") (term "1") (inst "#v0=t_4"))
+         (rule "variableDeclaration" (formula "8") (term "1") (newnames "t_4"))
+         (rule "allocateInstance" (formula "8"))
+          (builtin "One Step Simplification" (formula "9"))
+          (builtin "One Step Simplification" (formula "1"))
+         (rule "wellFormedStorePrimitive" (formula "1") (term "0,1,0"))
+         (rule "wellFormedStorePrimitive" (formula "1") (term "0,1,0"))
+         (rule "andLeft" (formula "1"))
+         (rule "andLeft" (formula "1"))
+         (rule "notLeft" (formula "1"))
+         (rule "dismissNonSelectedField" (formula "1") (term "0,0,1"))
+         (rule "dismissNonSelectedField" (formula "1") (term "0,0,1"))
+         (rule "blockEmpty" (formula "11") (term "1"))
+         (rule "assignment" (formula "11") (term "1"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "methodBodyExpand" (formula "11") (term "1") (newnames "gHeapBefore_<create>,heapBefore_<create>,savedHeapBefore_<create>"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "assignment_write_attribute_this" (formula "11"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "methodCallWithinClass" (formula "11") (term "1"))
+         (rule "methodBodyExpand" (formula "11") (term "1") (newnames "gHeapBefore_<prepareEnter>,heapBefore_<prepareEnter>,savedHeapBefore_<prepareEnter>"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "methodCallSuper" (formula "11") (term "1"))
+         (rule "methodBodyExpand" (formula "11") (term "1") (newnames "gHeapBefore_<prepare>,heapBefore_<prepare>,savedHeapBefore_<prepare>"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "methodCallEmpty" (formula "11") (term "1"))
+         (rule "blockEmpty" (formula "11") (term "1"))
+         (rule "ghost_assignment_write_attribute_this" (formula "11"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "assignment_write_attribute_this" (formula "11"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "methodCallEmpty" (formula "11") (term "1"))
+         (rule "blockEmpty" (formula "11") (term "1"))
+         (rule "methodCallReturnIgnoreResult" (formula "11") (term "1"))
+         (rule "methodCallReturn" (formula "11") (term "1"))
+         (rule "assignment" (formula "11") (term "1"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "methodCallEmpty" (formula "11") (term "1"))
+         (rule "blockEmpty" (formula "11") (term "1"))
+         (rule "assignment" (formula "11") (term "1"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "variableDeclarationAssign" (formula "11") (term "1"))
+         (rule "variableDeclaration" (formula "11") (term "1") (newnames "var"))
+         (rule "assignment" (formula "11") (term "1"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "methodBodyExpand" (formula "11") (term "1") (newnames "gHeapBefore_<init>,heapBefore_<init>,savedHeapBefore_<init>"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "methodCallSuper" (formula "11") (term "1"))
+         (rule "methodBodyExpand" (formula "11") (term "1") (newnames "gHeapBefore_<init>_0,heapBefore_<init>_0,savedHeapBefore_<init>_0"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "methodCallEmpty" (formula "11") (term "1"))
+         (rule "blockEmpty" (formula "11") (term "1"))
+         (rule "ghost_assignment_write_attribute_this" (formula "11"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "assignment_write_attribute_this" (formula "11"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "methodCallEmpty" (formula "11") (term "1"))
+         (rule "blockEmpty" (formula "11") (term "1"))
+         (rule "assignment_write_attribute" (formula "11"))
+         (branch "Normal Execution (t_2 != null)"
+             (builtin "One Step Simplification" (formula "11"))
+            (rule "assignment" (formula "11") (term "1"))
+             (builtin "One Step Simplification" (formula "11"))
+            (rule "methodCallReturn" (formula "11") (term "1"))
+            (rule "assignment" (formula "11") (term "1"))
+             (builtin "One Step Simplification" (formula "11"))
+            (rule "methodCallEmpty" (formula "11") (term "1"))
+             (builtin "One Step Simplification" (formula "11"))
+            (rule "blockEmpty" (formula "11") (term "1"))
+            (rule "assignment" (formula "11") (term "1"))
+             (builtin "One Step Simplification" (formula "11"))
+            (rule "methodCallEmpty" (formula "11") (term "1"))
+             (builtin "One Step Simplification" (formula "11"))
+            (rule "emptyModality" (formula "11") (term "1"))
+             (builtin "One Step Simplification" (formula "11") (ifInst ""  (formula "10")))
+            (rule "closeTrue" (formula "11"))
+         )
+         (branch "Null Reference (t_2 = null)"
+             (builtin "One Step Simplification" (formula "12"))
+             (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "11")))
+            (rule "closeFalse" (formula "1"))
+         )
+      )
+      (branch "Null Reference (callee = null)"
+         (rule "false_right" (formula "9"))
+          (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "9")))
+         (rule "closeFalse" (formula "1"))
+      )
+   )
+   (branch "CUT: bank.Account::newTransaction(store(store(heap, acc, bank.Account::$unsuccessfulWithdraws, Z(0(#))), acc, bank.Account::$locked, FALSE), gHeap, acc) = null FALSE"
+       (builtin "One Step Simplification" (formula "9"))
+      (rule "onlyCreatedObjectsAreObserved" (formula "8") (term "0"))
+      (rule "replace_known_right" (formula "1") (term "0") (ifseqformula "9"))
+       (builtin "One Step Simplification" (formula "1"))
+      (rule "dismissNonSelectedField" (formula "1") (term "0"))
+      (rule "dismissNonSelectedField" (formula "1") (term "0"))
+       (builtin "Evaluate Query" (formula "9") (term "0") (newnames "callee,queryResult,res_newTransaction"))
+      (rule "replaceKnownQuery10_6" (formula "10") (term "0"))
+      (rule "replaceKnownQuery10_6" (formula "11") (term "1,0"))
+      (rule "replaceKnownQuery10_6" (formula "2") (term "1,0"))
+      (rule "notLeft" (formula "1"))
+      (rule "eqSymm" (formula "8") (term "0,0,1"))
+      (rule "variableDeclaration" (formula "8") (term "1") (newnames "queryResult"))
+      (rule "methodCallWithAssignment" (formula "8") (inst "#v0=t"))
+      (branch "Normal Execution (callee != null)"
+         (rule "variableDeclaration" (formula "8") (term "1") (newnames "t"))
+         (rule "methodBodyExpand" (formula "8") (term "1") (newnames "gHeapBefore_newTransaction,heapBefore_newTransaction,savedHeapBefore_newTransaction"))
+          (builtin "One Step Simplification" (formula "8"))
+         (rule "returnUnfold" (formula "8") (term "1") (inst "#v0=t_1"))
+         (rule "variableDeclarationAssign" (formula "8") (term "1"))
+         (rule "variableDeclaration" (formula "8") (term "1") (newnames "t_1"))
+         (rule "instanceCreationAssignment" (formula "8") (term "1") (inst "#v0=t_2"))
+         (rule "variableDeclarationAssign" (formula "8") (term "1"))
+         (rule "variableDeclaration" (formula "8") (term "1") (newnames "t_2"))
+         (rule "staticMethodCallStaticWithAssignmentViaTypereference" (formula "8") (term "1") (inst "#v0=t_3"))
+         (rule "variableDeclaration" (formula "8") (term "1") (newnames "t_3"))
+         (rule "methodBodyExpand" (formula "8") (term "1") (newnames "gHeapBefore_<createObject>,heapBefore_<createObject>,savedHeapBefore_<createObject>"))
+          (builtin "One Step Simplification" (formula "8"))
+         (rule "variableDeclaration" (formula "8") (term "1") (newnames "__NEW__"))
+         (rule "staticMethodCallStaticWithAssignmentViaTypereference" (formula "8") (term "1") (inst "#v0=t_4"))
+         (rule "variableDeclaration" (formula "8") (term "1") (newnames "t_4"))
+         (rule "allocateInstance" (formula "8"))
+          (builtin "One Step Simplification" (formula "9"))
+          (builtin "One Step Simplification" (formula "1"))
+         (rule "wellFormedStorePrimitive" (formula "1") (term "0,1,0"))
+         (rule "wellFormedStorePrimitive" (formula "1") (term "0,1,0"))
+         (rule "andLeft" (formula "1"))
+         (rule "andLeft" (formula "1"))
+         (rule "notLeft" (formula "1"))
+         (rule "dismissNonSelectedField" (formula "1") (term "0,0,1"))
+         (rule "dismissNonSelectedField" (formula "1") (term "0,0,1"))
+         (rule "blockEmpty" (formula "11") (term "1"))
+         (rule "assignment" (formula "11") (term "1"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "methodBodyExpand" (formula "11") (term "1") (newnames "gHeapBefore_<create>,heapBefore_<create>,savedHeapBefore_<create>"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "assignment_write_attribute_this" (formula "11"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "methodCallWithinClass" (formula "11") (term "1"))
+         (rule "methodBodyExpand" (formula "11") (term "1") (newnames "gHeapBefore_<prepareEnter>,heapBefore_<prepareEnter>,savedHeapBefore_<prepareEnter>"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "methodCallSuper" (formula "11") (term "1"))
+         (rule "methodBodyExpand" (formula "11") (term "1") (newnames "gHeapBefore_<prepare>,heapBefore_<prepare>,savedHeapBefore_<prepare>"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "methodCallEmpty" (formula "11") (term "1"))
+         (rule "blockEmpty" (formula "11") (term "1"))
+         (rule "ghost_assignment_write_attribute_this" (formula "11"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "assignment_write_attribute_this" (formula "11"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "methodCallEmpty" (formula "11") (term "1"))
+         (rule "blockEmpty" (formula "11") (term "1"))
+         (rule "methodCallReturnIgnoreResult" (formula "11") (term "1"))
+         (rule "methodCallReturn" (formula "11") (term "1"))
+         (rule "assignment" (formula "11") (term "1"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "methodCallEmpty" (formula "11") (term "1"))
+         (rule "blockEmpty" (formula "11") (term "1"))
+         (rule "assignment" (formula "11") (term "1"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "variableDeclarationAssign" (formula "11") (term "1"))
+         (rule "variableDeclaration" (formula "11") (term "1") (newnames "var"))
+         (rule "assignment" (formula "11") (term "1"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "methodBodyExpand" (formula "11") (term "1") (newnames "gHeapBefore_<init>,heapBefore_<init>,savedHeapBefore_<init>"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "methodCallSuper" (formula "11") (term "1"))
+         (rule "methodBodyExpand" (formula "11") (term "1") (newnames "gHeapBefore_<init>_0,heapBefore_<init>_0,savedHeapBefore_<init>_0"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "methodCallEmpty" (formula "11") (term "1"))
+         (rule "blockEmpty" (formula "11") (term "1"))
+         (rule "ghost_assignment_write_attribute_this" (formula "11"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "assignment_write_attribute_this" (formula "11"))
+          (builtin "One Step Simplification" (formula "11"))
+         (rule "methodCallEmpty" (formula "11") (term "1"))
+         (rule "blockEmpty" (formula "11") (term "1"))
+         (rule "assignment_write_attribute" (formula "11"))
+         (branch "Normal Execution (t_2 != null)"
+             (builtin "One Step Simplification" (formula "11"))
+            (rule "assignment" (formula "11") (term "1"))
+             (builtin "One Step Simplification" (formula "11"))
+            (rule "methodCallReturn" (formula "11") (term "1"))
+            (rule "assignment" (formula "11") (term "1"))
+             (builtin "One Step Simplification" (formula "11"))
+            (rule "methodCallEmpty" (formula "11") (term "1"))
+             (builtin "One Step Simplification" (formula "11"))
+            (rule "blockEmpty" (formula "11") (term "1"))
+            (rule "assignment" (formula "11") (term "1"))
+             (builtin "One Step Simplification" (formula "11"))
+            (rule "methodCallEmpty" (formula "11") (term "1"))
+             (builtin "One Step Simplification" (formula "11"))
+            (rule "emptyModality" (formula "11") (term "1"))
+             (builtin "One Step Simplification" (formula "11"))
+            (rule "notRight" (formula "11"))
+            (rule "eqSymm" (formula "1"))
+            (rule "applyEq" (formula "3") (term "0,0") (ifseqformula "1"))
+            (rule "applyEq" (formula "2") (term "1,0,0,1") (ifseqformula "1"))
+            (rule "replace_known_left" (formula "2") (term "0,1") (ifseqformula "4"))
+             (builtin "One Step Simplification" (formula "2"))
+            (rule "notLeft" (formula "2"))
+            (rule "known_wellFormed_normal" (formula "10") (ifseqformula "9"))
+            (rule "closeTrue" (formula "10"))
+         )
+         (branch "Null Reference (t_2 = null)"
+             (builtin "One Step Simplification" (formula "12"))
+             (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "11")))
+            (rule "closeFalse" (formula "1"))
+         )
+      )
+      (branch "Null Reference (callee = null)"
+          (builtin "One Step Simplification" (formula "9"))
+          (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "10")))
+         (rule "closeFalse" (formula "1"))
+      )
+   )
+)
+(branch "if this.locked false"
+    (builtin "One Step Simplification" (formula "9"))
+    (builtin "One Step Simplification" (formula "1"))
+   (rule "closeFalse" (formula "1"))
+)
+)
+}

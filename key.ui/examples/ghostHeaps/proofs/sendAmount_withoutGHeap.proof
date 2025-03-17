@@ -62,7 +62,7 @@
             "OSS_OPTIONS_KEY" : "OSS_ON",
             "QUANTIFIERS_OPTIONS_KEY" : "QUANTIFIERS_NON_SPLITTING_WITH_PROGS",
             "QUERYAXIOM_OPTIONS_KEY" : "QUERYAXIOM_ON",
-            "QUERY_NEW_OPTIONS_KEY" : "QUERY_OFF",
+            "QUERY_NEW_OPTIONS_KEY" : "QUERY_ON",
             "SPLITTING_OPTIONS_KEY" : "SPLITTING_DELAYED",
             "STOPMODE_OPTIONS_KEY" : "STOPMODE_DEFAULT",
             "SYMBOLIC_EXECUTION_ALIAS_CHECK_OPTIONS_KEY" : "SYMBOLIC_EXECUTION_ALIAS_CHECK_NEVER",
@@ -123,10 +123,10 @@
 \proof {
 (keyLog "0" (keyUser "Annie" ) (keyVersion "8e284394d2e0d70dc54fe684ec9c707b6f60a7df"))
 
-(autoModeTime "1991")
+(autoModeTime "941")
 
 (branch "dummy ID"
- (builtin "One Step Simplification" (formula "1") (newnames "heapAtPre,savedHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,arg0AtPre,arg1AtPre,heapAtPre,savedHeapAtPre,arg0AtPre,arg1AtPre,heapAtPre,savedHeapAtPre,arg0AtPre,heapAtPre,savedHeapAtPre,vAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre"))
+ (builtin "One Step Simplification" (formula "1") (newnames "heapAtPre,savedHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,arg0AtPre,arg1AtPre,heapAtPre,savedHeapAtPre,arg0AtPre,arg1AtPre,heapAtPre,savedHeapAtPre,arg0AtPre,heapAtPre,savedHeapAtPre,vAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre"))
 (rule "impRight" (formula "1"))
 (rule "andLeft" (formula "1"))
 (rule "andLeft" (formula "1"))
@@ -936,32 +936,29 @@
                                                 (rule "hideAuxiliaryEq" (formula "1"))
                                                 (rule "ifthenelse_split" (formula "5") (term "0"))
                                                 (branch "acc = a_2 TRUE"
-                                                   (rule "applyEqReverse" (formula "2") (term "1,1,0") (ifseqformula "6"))
-                                                   (rule "add_zero_right" (formula "2") (term "1,0"))
+                                                   (rule "applyEqReverse" (formula "1") (term "1,2,0") (ifseqformula "6"))
+                                                   (rule "add_zero_right" (formula "1") (term "2,0"))
                                                    (rule "applyEqReverse" (formula "4") (term "0") (ifseqformula "6"))
                                                    (rule "qeq_literals" (formula "4"))
                                                    (rule "closeFalse" (formula "4"))
                                                 )
                                                 (branch "acc = a_2 FALSE"
-                                                   (rule "applyEqReverse" (formula "2") (term "1,1,0") (ifseqformula "5"))
-                                                   (rule "add_literals" (formula "2") (term "1,0"))
+                                                   (rule "applyEqReverse" (formula "1") (term "1,2,0") (ifseqformula "5"))
+                                                   (rule "add_literals" (formula "1") (term "2,0"))
                                                    (rule "applyEqReverse" (formula "4") (term "0") (ifseqformula "5"))
                                                    (rule "qeq_literals" (formula "4"))
                                                    (rule "true_left" (formula "4"))
-                                                   (rule "applyEqReverse" (formula "1") (term "1,2,0") (ifseqformula "4"))
-                                                   (rule "add_literals" (formula "1") (term "2,0"))
+                                                   (rule "applyEqReverse" (formula "2") (term "1,1,0") (ifseqformula "4"))
+                                                   (rule "add_literals" (formula "2") (term "1,0"))
                                                    (rule "hideAuxiliaryEq" (formula "4"))
-                                                   (rule "replace_known_right" (formula "3") (term "0,0") (ifseqformula "11"))
-                                                    (builtin "One Step Simplification" (formula "3"))
-                                                   (rule "hideAuxiliaryEq" (formula "3"))
-                                                   (rule "replace_known_right" (formula "2") (term "0,0") (ifseqformula "10"))
+                                                   (rule "replace_known_right" (formula "2") (term "0,0") (ifseqformula "11"))
                                                     (builtin "One Step Simplification" (formula "2"))
                                                    (rule "applyEqReverse" (formula "1") (term "1,1,0") (ifseqformula "2"))
                                                    (rule "add_literals" (formula "1") (term "1,0"))
-                                                    (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "10")))
-                                                   (rule "applyEqReverse" (formula "20") (term "0") (ifseqformula "1"))
-                                                    (builtin "One Step Simplification" (formula "20"))
-                                                   (rule "closeTrue" (formula "20"))
+                                                    (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "11")))
+                                                   (rule "applyEqReverse" (formula "21") (term "0") (ifseqformula "1"))
+                                                    (builtin "One Step Simplification" (formula "21"))
+                                                   (rule "closeTrue" (formula "21"))
                                                 )
                                              )
                                              (branch "Null Reference (t_9.getAmount() > 0 = null)"

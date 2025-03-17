@@ -61,7 +61,7 @@
             "OSS_OPTIONS_KEY" : "OSS_ON",
             "QUANTIFIERS_OPTIONS_KEY" : "QUANTIFIERS_NON_SPLITTING_WITH_PROGS",
             "QUERYAXIOM_OPTIONS_KEY" : "QUERYAXIOM_ON",
-            "QUERY_NEW_OPTIONS_KEY" : "QUERY_OFF",
+            "QUERY_NEW_OPTIONS_KEY" : "QUERY_ON",
             "SPLITTING_OPTIONS_KEY" : "SPLITTING_DELAYED",
             "STOPMODE_OPTIONS_KEY" : "STOPMODE_DEFAULT",
             "SYMBOLIC_EXECUTION_ALIAS_CHECK_OPTIONS_KEY" : "SYMBOLIC_EXECUTION_ALIAS_CHECK_NEVER",
@@ -123,12 +123,11 @@
 
 \proof {
 (keyLog "0" (keyUser "Annie" ) (keyVersion "66fc99f47d3c94fe5dbf37dada114bebc81cf78c"))
-(keyLog "1" (keyUser "Annie" ) (keyVersion "66fc99f47d3c94fe5dbf37dada114bebc81cf78c"))
 
-(autoModeTime "1564")
+(autoModeTime "1208")
 
 (branch "dummy ID"
- (builtin "One Step Simplification" (formula "1") (newnames "heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,arg0AtPre,arg1AtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,arg0AtPre,arg1AtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,arg0AtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,vAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre"))
+ (builtin "One Step Simplification" (formula "1") (newnames "heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,arg0AtPre,arg1AtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,arg0AtPre,arg1AtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,arg0AtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,vAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre,heapAtPre,savedHeapAtPre,gHeapAtPre"))
 (rule "impRight" (formula "1"))
 (rule "andLeft" (formula "1"))
 (rule "andLeft" (formula "1"))

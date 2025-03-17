@@ -4,7 +4,5 @@ public class DummyObject {
     //@ public ghost int ga = 0;
 
     public DummyObject otherDummy = new DummyObject();
-
-    //@ ghost public DummyObject gnext = new DummyObject();
-
+    //@ public ghost DummyObject gOtherDummy = new DummyObject();
 }

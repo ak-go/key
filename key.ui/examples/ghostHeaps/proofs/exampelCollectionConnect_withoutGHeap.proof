@@ -1,0 +1,742 @@
+\profile "Java Profile";
+
+\settings // Proof-Settings-Config-File
+{ 
+    "Choice" : { 
+        "JavaCard" : "JavaCard:off",
+        "Strings" : "Strings:on",
+        "assertions" : "assertions:safe",
+        "bigint" : "bigint:on",
+        "floatRules" : "floatRules:strictfpOnly",
+        "initialisation" : "initialisation:disableStaticInitialisation",
+        "intRules" : "intRules:arithmeticSemanticsIgnoringOF",
+        "integerSimplificationRules" : "integerSimplificationRules:full",
+        "javaLoopTreatment" : "javaLoopTreatment:efficient",
+        "mergeGenerateIsWeakeningGoal" : "mergeGenerateIsWeakeningGoal:off",
+        "methodExpansion" : "methodExpansion:noRestriction",
+        "modelFields" : "modelFields:treatAsAxiom",
+        "moreSeqRules" : "moreSeqRules:off",
+        "permissions" : "permissions:off",
+        "programRules" : "programRules:Java",
+        "reach" : "reach:on",
+        "runtimeExceptions" : "runtimeExceptions:ban",
+        "sequences" : "sequences:on",
+        "soundDefaultContracts" : "soundDefaultContracts:on",
+        "wdChecks" : "wdChecks:off",
+        "wdOperator" : "wdOperator:L"
+     },
+    "Labels" : { 
+        "UseOriginLabels" : true
+     },
+    "NewSMT" : { 
+        
+     },
+    "SMTSettings" : { 
+        "SelectedTaclets" : [ 
+            
+         ],
+        "UseBuiltUniqueness" : false,
+        "explicitTypeHierarchy" : false,
+        "instantiateHierarchyAssumptions" : true,
+        "integersMaximum" : 2147483645,
+        "integersMinimum" : -2147483645,
+        "invariantForall" : false,
+        "maxGenericSorts" : 2,
+        "useConstantsForBigOrSmallIntegers" : true,
+        "useUninterpretedMultiplication" : true
+     },
+    "Strategy" : { 
+        "ActiveStrategy" : "JavaCardDLStrategy",
+        "MaximumNumberOfAutomaticApplications" : 10000,
+        "Timeout" : -1,
+        "options" : { 
+            "AUTO_INDUCTION_OPTIONS_KEY" : "AUTO_INDUCTION_OFF",
+            "BLOCK_OPTIONS_KEY" : "BLOCK_CONTRACT_INTERNAL",
+            "CLASS_AXIOM_OPTIONS_KEY" : "CLASS_AXIOM_FREE",
+            "DEP_OPTIONS_KEY" : "DEP_ON",
+            "INF_FLOW_CHECK_PROPERTY" : "INF_FLOW_CHECK_FALSE",
+            "LOOP_OPTIONS_KEY" : "LOOP_SCOPE_INV_TACLET",
+            "METHOD_OPTIONS_KEY" : "METHOD_EXPAND",
+            "MPS_OPTIONS_KEY" : "MPS_MERGE",
+            "NON_LIN_ARITH_OPTIONS_KEY" : "NON_LIN_ARITH_NONE",
+            "OSS_OPTIONS_KEY" : "OSS_ON",
+            "QUANTIFIERS_OPTIONS_KEY" : "QUANTIFIERS_NON_SPLITTING_WITH_PROGS",
+            "QUERYAXIOM_OPTIONS_KEY" : "QUERYAXIOM_ON",
+            "QUERY_NEW_OPTIONS_KEY" : "QUERY_ON",
+            "SPLITTING_OPTIONS_KEY" : "SPLITTING_DELAYED",
+            "STOPMODE_OPTIONS_KEY" : "STOPMODE_DEFAULT",
+            "SYMBOLIC_EXECUTION_ALIAS_CHECK_OPTIONS_KEY" : "SYMBOLIC_EXECUTION_ALIAS_CHECK_NEVER",
+            "SYMBOLIC_EXECUTION_NON_EXECUTION_BRANCH_HIDING_OPTIONS_KEY" : "SYMBOLIC_EXECUTION_NON_EXECUTION_BRANCH_HIDING_OFF",
+            "USER_TACLETS_OPTIONS_KEY1" : "USER_TACLETS_OFF",
+            "USER_TACLETS_OPTIONS_KEY2" : "USER_TACLETS_OFF",
+            "USER_TACLETS_OPTIONS_KEY3" : "USER_TACLETS_OFF",
+            "VBT_PHASE" : "VBT_SYM_EX"
+         }
+     }
+ } 
+
+\javaSource "src";
+
+\programVariables{
+    other.SmallExampleCollection c;
+    other.DummyObject dres;
+}
+\problem {
+       boolean::select(heap,
+                       c,
+                       java.lang.Object::<created>)
+     = TRUE
+   & !  other.DummyObject::select(heap,
+                                  c,
+                                  other.SmallExampleCollection::$d1)
+      = null
+   & !  other.DummyObject::select(heap,
+                                  c,
+                                  other.SmallExampleCollection::$d2)
+      = null
+   & !  other.DummyObject::select(heap,
+                                  c,
+                                  other.SmallExampleCollection::$d3)
+      = null
+   & !  other.DummyObject::select(heap,
+                                  c,
+                                  other.SmallExampleCollection::$d1)
+      = other.DummyObject::select(heap,
+                                  c,
+                                  other.SmallExampleCollection::$d2)
+   & !  other.DummyObject::select(heap,
+                                  c,
+                                  other.SmallExampleCollection::$d2)
+      = other.DummyObject::select(heap,
+                                  c,
+                                  other.SmallExampleCollection::$d3)
+   & !  other.DummyObject::select(heap,
+                                  c,
+                                  other.SmallExampleCollection::$d1)
+      = other.DummyObject::select(heap,
+                                  c,
+                                  other.SmallExampleCollection::$d3)
+   & wellFormed(heap)
+-> \<{
+     c.connectDummyObjects()@other.SmallExampleCollection;
+   }\> (    other.DummyObject::select(heap,
+                                      other.DummyObject::select(heap,
+                                                                c,
+                                                                other.SmallExampleCollection::$d1),
+                                      other.DummyObject::$otherDummy)
+          = other.DummyObject::select(heap,
+                                      other.DummyObject[]::select(heap,
+                                                                  c,
+                                                                  other.SmallExampleCollection::$dummyArr),
+                                      arr(Z(1(#))))
+        &   other.DummyObject::select(heap,
+                                      other.DummyObject::select(heap,
+                                                                c,
+                                                                other.SmallExampleCollection::$d2),
+                                      other.DummyObject::$otherDummy)
+          = other.DummyObject::select(heap,
+                                      other.DummyObject[]::select(heap,
+                                                                  c,
+                                                                  other.SmallExampleCollection::$dummyArr),
+                                      arr(Z(2(#))))
+        &   other.DummyObject::select(heap,
+                                      other.DummyObject::select(heap,
+                                                                c,
+                                                                other.SmallExampleCollection::$d3),
+                                      other.DummyObject::$otherDummy)
+          = other.DummyObject::select(heap,
+                                      other.DummyObject[]::select(heap,
+                                                                  c,
+                                                                  other.SmallExampleCollection::$dummyArr),
+                                      arr(Z(0(#)))))
+}
+
+\proof {
+(keyLog "0" (keyUser "Annie" ) (keyVersion "8e284394d2e0d70dc54fe684ec9c707b6f60a7df"))
+
+(autoModeTime "442")
+
+(branch "dummy ID"
+(rule "impRight" (formula "1") (newnames "heapAtPre,savedHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,tAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,arg0AtPre,arg1AtPre,heapAtPre,savedHeapAtPre,arg0AtPre,arg1AtPre,heapAtPre,savedHeapAtPre,arg0AtPre,heapAtPre,savedHeapAtPre,vAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre,heapAtPre,savedHeapAtPre"))
+(rule "andLeft" (formula "1"))
+(rule "andLeft" (formula "1"))
+(rule "andLeft" (formula "1"))
+(rule "notLeft" (formula "3"))
+(rule "andLeft" (formula "1"))
+(rule "notLeft" (formula "3"))
+(rule "notLeft" (formula "2"))
+(rule "andLeft" (formula "1"))
+(rule "notLeft" (formula "2"))
+(rule "andLeft" (formula "1"))
+(rule "notLeft" (formula "2"))
+(rule "andLeft" (formula "1"))
+(rule "notLeft" (formula "2"))
+(rule "eqSymm" (formula "9") (term "0,0,0"))
+(rule "eqSymm" (formula "9") (term "1,0"))
+(rule "eqSymm" (formula "9") (term "1,0,0"))
+(rule "eqSymm" (formula "8"))
+(rule "eqSymm" (formula "7"))
+(rule "eqSymm" (formula "6"))
+(rule "methodBodyExpand" (formula "9") (newnames "heapBefore_connectDummyObjects,savedHeapBefore_connectDummyObjects"))
+(rule "variableDeclarationAssign" (formula "9") (term "1"))
+(rule "variableDeclaration" (formula "9") (term "1") (newnames "arr_1"))
+(rule "arrayCreationWithInitializers" (formula "9") (term "1") (inst "#v0=d_arr"))
+(rule "variableDeclaration" (formula "9") (term "1") (newnames "d_arr"))
+(rule "variableDeclarationAssign" (formula "9") (term "1"))
+(rule "variableDeclaration" (formula "9") (term "1") (newnames "_tmpArray"))
+(rule "assignment_read_attribute_this" (formula "9"))
+ (builtin "One Step Simplification" (formula "9"))
+(rule "variableDeclarationAssign" (formula "9") (term "1"))
+(rule "variableDeclaration" (formula "9") (term "1") (newnames "_tmpArray_1"))
+(rule "assignment_read_attribute_this" (formula "9"))
+ (builtin "One Step Simplification" (formula "9"))
+(rule "variableDeclarationAssign" (formula "9") (term "1"))
+(rule "variableDeclaration" (formula "9") (term "1") (newnames "_tmpArray_2"))
+(rule "assignment_read_attribute_this" (formula "9"))
+ (builtin "One Step Simplification" (formula "9"))
+(rule "arrayCreation" (formula "9") (term "1") (newnames "dim0#3") (inst "#v0=d_arr_1"))
+(rule "variableDeclaration" (formula "9") (term "1") (newnames "d_arr_1"))
+(rule "variableDeclarationAssign" (formula "9") (term "1"))
+(rule "variableDeclaration" (formula "9") (term "1") (newnames "dim0"))
+(rule "assignment" (formula "9") (term "1"))
+ (builtin "One Step Simplification" (formula "9"))
+(rule "ifUnfold" (formula "9") (term "1") (inst "#boolv=b"))
+(rule "variableDeclaration" (formula "9") (term "1") (newnames "b"))
+(rule "less_than_comparison_simple" (formula "9") (term "1"))
+ (builtin "One Step Simplification" (formula "9"))
+(rule "less_literals" (formula "9") (term "0,0,1,0"))
+ (builtin "One Step Simplification" (formula "9"))
+(rule "ifSplit" (formula "9"))
+(branch "if dim0 < 0 true"
+    (builtin "One Step Simplification" (formula "10"))
+    (builtin "One Step Simplification" (formula "1"))
+   (rule "closeFalse" (formula "1"))
+)
+(branch "if dim0 < 0 false"
+    (builtin "One Step Simplification" (formula "10"))
+    (builtin "One Step Simplification" (formula "1"))
+   (rule "true_left" (formula "1"))
+   (rule "staticMethodCallStaticWithAssignmentViaTypereference" (formula "9") (term "1") (newnames "length#4") (inst "#v0=d_arr_2"))
+   (rule "variableDeclaration" (formula "9") (term "1") (newnames "d_arr_2"))
+   (rule "variableDeclarationAssign" (formula "9") (term "1"))
+   (rule "variableDeclaration" (formula "9") (term "1") (newnames "length_1"))
+   (rule "assignment" (formula "9") (term "1"))
+    (builtin "One Step Simplification" (formula "9"))
+   (rule "methodBodyExpand" (formula "9") (term "1") (newnames "heapBefore_<createArray>,savedHeapBefore_<createArray>"))
+    (builtin "One Step Simplification" (formula "9"))
+   (rule "variableDeclaration" (formula "9") (term "1") (newnames "newObject"))
+   (rule "onlyCreatedObjectsAreReferenced" (formula "8") (term "0") (ifseqformula "2"))
+   (rule "replace_known_right" (formula "1") (term "0") (ifseqformula "6"))
+    (builtin "One Step Simplification" (formula "1"))
+   (rule "onlyCreatedObjectsAreReferenced" (formula "4") (term "0") (ifseqformula "3"))
+   (rule "replace_known_right" (formula "1") (term "0") (ifseqformula "5"))
+    (builtin "One Step Simplification" (formula "1"))
+   (rule "onlyCreatedObjectsAreReferenced" (formula "6") (term "0") (ifseqformula "4"))
+   (rule "replace_known_right" (formula "1") (term "0") (ifseqformula "7"))
+    (builtin "One Step Simplification" (formula "1"))
+   (rule "staticMethodCallStaticWithAssignmentViaTypereference" (formula "12") (term "1") (newnames "length#5") (inst "#v0=d_arr_3"))
+   (rule "variableDeclaration" (formula "12") (term "1") (newnames "d_arr_3"))
+   (rule "variableDeclarationAssign" (formula "12") (term "1"))
+   (rule "variableDeclaration" (formula "12") (term "1") (newnames "length_2"))
+   (rule "assignment" (formula "12") (term "1"))
+    (builtin "One Step Simplification" (formula "12"))
+   (rule "allocateInstanceWithLength" (formula "12"))
+    (builtin "One Step Simplification" (formula "13"))
+    (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "6")))
+   (rule "andLeft" (formula "1"))
+   (rule "andLeft" (formula "1"))
+   (rule "andLeft" (formula "2"))
+   (rule "notLeft" (formula "1"))
+   (rule "notLeft" (formula "1"))
+   (rule "blockEmpty" (formula "16") (term "1"))
+   (rule "assignment" (formula "16") (term "1"))
+    (builtin "One Step Simplification" (formula "16"))
+   (rule "arrayLengthNotNegative" (formula "1") (term "0"))
+   (rule "applyEq" (formula "1") (term "0") (ifseqformula "2"))
+   (rule "qeq_literals" (formula "1"))
+   (rule "true_left" (formula "1"))
+   (rule "arrayLengthIsAnInt" (formula "1") (term "0"))
+    (builtin "One Step Simplification" (formula "1"))
+   (rule "true_left" (formula "1"))
+   (rule "methodCall" (formula "16"))
+   (branch "Normal Execution (newObject != null )"
+      (rule "methodBodyExpand" (formula "16") (term "1") (newnames "heapBefore_<createArrayHelper>,savedHeapBefore_<createArrayHelper>"))
+       (builtin "One Step Simplification" (formula "16"))
+      (rule "assignment_write_attribute_this" (formula "16"))
+       (builtin "One Step Simplification" (formula "16"))
+      (rule "methodCallWithinClass" (formula "16") (term "1"))
+      (rule "methodBodyExpand" (formula "16") (term "1") (newnames "heapBefore_<prepare>,savedHeapBefore_<prepare>"))
+       (builtin "One Step Simplification" (formula "16"))
+      (rule "arrayInitialisation" (formula "16") (term "1"))
+       (builtin "One Step Simplification" (formula "16"))
+      (rule "polySimp_elimSub" (formula "16") (term "2,1,0,1,0"))
+      (rule "mul_literals" (formula "16") (term "1,2,1,0,1,0"))
+      (rule "polySimp_addComm0" (formula "16") (term "2,1,0,1,0"))
+      (rule "applyEq" (formula "16") (term "1,2,1,0,1,0") (ifseqformula "1"))
+      (rule "add_literals" (formula "16") (term "2,1,0,1,0"))
+      (rule "methodCallEmpty" (formula "16") (term "1"))
+      (rule "blockEmpty" (formula "16") (term "1"))
+      (rule "assignment_write_attribute_this" (formula "16"))
+       (builtin "One Step Simplification" (formula "16"))
+      (rule "methodCallReturnIgnoreResult" (formula "16") (term "1"))
+      (rule "blockEmpty" (formula "16") (term "1"))
+      (rule "methodCallReturn" (formula "16") (term "1"))
+      (rule "assignment" (formula "16") (term "1"))
+       (builtin "One Step Simplification" (formula "16"))
+      (rule "methodCallEmpty" (formula "16") (term "1"))
+      (rule "blockEmpty" (formula "16") (term "1"))
+      (rule "assignment" (formula "16") (term "1"))
+       (builtin "One Step Simplification" (formula "16"))
+      (rule "blockEmpty" (formula "16") (term "1"))
+      (rule "assignment" (formula "16") (term "1"))
+       (builtin "One Step Simplification" (formula "16"))
+      (rule "assignment_to_reference_array_component" (formula "16"))
+      (branch "Normal Execution (dim0 < 0 != null)"
+          (builtin "One Step Simplification" (formula "16"))
+         (rule "assignment_to_reference_array_component" (formula "16"))
+         (branch "Normal Execution (dim0 < 0 != null)"
+             (builtin "One Step Simplification" (formula "16"))
+            (rule "assignment_to_reference_array_component" (formula "16"))
+            (branch "Normal Execution (dim0 < 0 != null)"
+                (builtin "One Step Simplification" (formula "16"))
+               (rule "blockEmpty" (formula "16") (term "1"))
+               (rule "assignment" (formula "16") (term "1"))
+                (builtin "One Step Simplification" (formula "16"))
+                (builtin "Set Statement" (formula "16"))
+                (builtin "One Step Simplification" (formula "16"))
+               (rule "eval_order_access1" (formula "16") (term "1") (inst "#v0=d"))
+               (rule "variableDeclarationAssign" (formula "16") (term "1"))
+               (rule "variableDeclaration" (formula "16") (term "1") (newnames "d"))
+               (rule "assignment_read_attribute_this" (formula "16"))
+                (builtin "One Step Simplification" (formula "16"))
+               (rule "dismissNonSelectedField" (formula "16") (term "0,1,0"))
+               (rule "dismissNonSelectedField" (formula "16") (term "0,1,0"))
+               (rule "dismissNonSelectedField" (formula "16") (term "0,1,0"))
+               (rule "dismissNonSelectedField" (formula "16") (term "0,1,0"))
+               (rule "dismissNonSelectedField" (formula "16") (term "0,1,0"))
+               (rule "pullOutSelect" (formula "16") (term "0,1,0") (inst "selectSK=other_SmallExampleCollection_d1_0"))
+               (rule "simplifySelectOfMemset" (formula "1"))
+                (builtin "One Step Simplification" (formula "1"))
+               (rule "dismissNonSelectedField" (formula "1") (term "2,0"))
+               (rule "dismissNonSelectedField" (formula "1") (term "2,0"))
+               (rule "dismissNonSelectedField" (formula "1") (term "2,0"))
+               (rule "eval_order_access4" (formula "17") (term "1") (inst "#v1=d_2") (inst "#v0=d_1"))
+               (rule "variableDeclarationAssign" (formula "17") (term "1"))
+               (rule "variableDeclaration" (formula "17") (term "1") (newnames "d_1"))
+               (rule "assignment" (formula "17") (term "1"))
+                (builtin "One Step Simplification" (formula "17"))
+               (rule "variableDeclarationAssign" (formula "17") (term "1"))
+               (rule "variableDeclaration" (formula "17") (term "1") (newnames "d_2"))
+               (rule "assignment_read_attribute_this" (formula "17"))
+                (builtin "One Step Simplification" (formula "17"))
+               (rule "dismissNonSelectedField" (formula "17") (term "0,1,0"))
+               (rule "dismissNonSelectedField" (formula "17") (term "0,1,0"))
+               (rule "dismissNonSelectedField" (formula "17") (term "0,1,0"))
+               (rule "dismissNonSelectedField" (formula "17") (term "0,1,0"))
+               (rule "dismissNonSelectedField" (formula "17") (term "0,1,0"))
+               (rule "pullOutSelect" (formula "17") (term "0,1,0") (inst "selectSK=other_SmallExampleCollection_d2_0"))
+               (rule "simplifySelectOfMemset" (formula "1"))
+                (builtin "One Step Simplification" (formula "1"))
+               (rule "dismissNonSelectedField" (formula "1") (term "2,0"))
+               (rule "dismissNonSelectedField" (formula "1") (term "2,0"))
+               (rule "dismissNonSelectedField" (formula "1") (term "2,0"))
+               (rule "assignment_write_attribute" (formula "18"))
+               (branch "Normal Execution (d_1 != null)"
+                   (builtin "One Step Simplification" (formula "18"))
+                  (rule "eval_order_access1" (formula "18") (term "1") (inst "#v0=d_3"))
+                  (rule "variableDeclarationAssign" (formula "18") (term "1"))
+                  (rule "variableDeclaration" (formula "18") (term "1") (newnames "d_3"))
+                  (rule "assignment_read_attribute_this" (formula "18"))
+                   (builtin "One Step Simplification" (formula "18"))
+                  (rule "dismissNonSelectedField" (formula "18") (term "0,1,0"))
+                  (rule "dismissNonSelectedField" (formula "18") (term "0,1,0"))
+                  (rule "dismissNonSelectedField" (formula "18") (term "0,1,0"))
+                  (rule "dismissNonSelectedField" (formula "18") (term "0,1,0"))
+                  (rule "dismissNonSelectedField" (formula "18") (term "0,1,0"))
+                  (rule "dismissNonSelectedField" (formula "18") (term "0,1,0"))
+                  (rule "replaceKnownSelect_taclet00001_1" (formula "18") (term "0,1,0"))
+                  (rule "eval_order_access4" (formula "18") (term "1") (inst "#v1=d_5") (inst "#v0=d_4"))
+                  (rule "variableDeclarationAssign" (formula "18") (term "1"))
+                  (rule "variableDeclaration" (formula "18") (term "1") (newnames "d_4"))
+                  (rule "assignment" (formula "18") (term "1"))
+                   (builtin "One Step Simplification" (formula "18"))
+                  (rule "variableDeclarationAssign" (formula "18") (term "1"))
+                  (rule "variableDeclaration" (formula "18") (term "1") (newnames "d_5"))
+                  (rule "assignment_read_attribute_this" (formula "18"))
+                   (builtin "One Step Simplification" (formula "18"))
+                  (rule "dismissNonSelectedField" (formula "18") (term "0,1,0"))
+                  (rule "dismissNonSelectedField" (formula "18") (term "0,1,0"))
+                  (rule "dismissNonSelectedField" (formula "18") (term "0,1,0"))
+                  (rule "dismissNonSelectedField" (formula "18") (term "0,1,0"))
+                  (rule "dismissNonSelectedField" (formula "18") (term "0,1,0"))
+                  (rule "dismissNonSelectedField" (formula "18") (term "0,1,0"))
+                  (rule "pullOutSelect" (formula "18") (term "0,1,0") (inst "selectSK=other_SmallExampleCollection_d3_0"))
+                  (rule "simplifySelectOfMemset" (formula "1"))
+                   (builtin "One Step Simplification" (formula "1"))
+                  (rule "dismissNonSelectedField" (formula "1") (term "2,0"))
+                  (rule "dismissNonSelectedField" (formula "1") (term "2,0"))
+                  (rule "dismissNonSelectedField" (formula "1") (term "2,0"))
+                  (rule "assignment_write_attribute" (formula "19"))
+                  (branch "Normal Execution (d_4 != null)"
+                      (builtin "One Step Simplification" (formula "19"))
+                     (rule "eval_order_access1" (formula "19") (term "1") (inst "#v0=d_6"))
+                     (rule "variableDeclarationAssign" (formula "19") (term "1"))
+                     (rule "variableDeclaration" (formula "19") (term "1") (newnames "d_6"))
+                     (rule "assignment_read_attribute_this" (formula "19"))
+                      (builtin "One Step Simplification" (formula "19"))
+                     (rule "dismissNonSelectedField" (formula "19") (term "0,1,0"))
+                     (rule "dismissNonSelectedField" (formula "19") (term "0,1,0"))
+                     (rule "dismissNonSelectedField" (formula "19") (term "0,1,0"))
+                     (rule "dismissNonSelectedField" (formula "19") (term "0,1,0"))
+                     (rule "dismissNonSelectedField" (formula "19") (term "0,1,0"))
+                     (rule "dismissNonSelectedField" (formula "19") (term "0,1,0"))
+                     (rule "dismissNonSelectedField" (formula "19") (term "0,1,0"))
+                     (rule "replaceKnownSelect_taclet000001_2" (formula "19") (term "0,1,0"))
+                     (rule "eval_order_access4" (formula "19") (term "1") (inst "#v1=d_8") (inst "#v0=d_7"))
+                     (rule "variableDeclarationAssign" (formula "19") (term "1"))
+                     (rule "variableDeclaration" (formula "19") (term "1") (newnames "d_7"))
+                     (rule "assignment" (formula "19") (term "1"))
+                      (builtin "One Step Simplification" (formula "19"))
+                     (rule "variableDeclarationAssign" (formula "19") (term "1"))
+                     (rule "variableDeclaration" (formula "19") (term "1") (newnames "d_8"))
+                     (rule "assignment_read_attribute_this" (formula "19"))
+                      (builtin "One Step Simplification" (formula "19"))
+                     (rule "dismissNonSelectedField" (formula "19") (term "0,1,0"))
+                     (rule "dismissNonSelectedField" (formula "19") (term "0,1,0"))
+                     (rule "dismissNonSelectedField" (formula "19") (term "0,1,0"))
+                     (rule "dismissNonSelectedField" (formula "19") (term "0,1,0"))
+                     (rule "dismissNonSelectedField" (formula "19") (term "0,1,0"))
+                     (rule "dismissNonSelectedField" (formula "19") (term "0,1,0"))
+                     (rule "dismissNonSelectedField" (formula "19") (term "0,1,0"))
+                     (rule "replaceKnownSelect_taclet00001_0" (formula "19") (term "0,1,0"))
+                     (rule "assignment_write_attribute" (formula "19"))
+                     (branch "Normal Execution (d_7 != null)"
+                         (builtin "One Step Simplification" (formula "19"))
+                        (rule "elementOfArrayRange" (formula "3") (term "0,0") (inst "iv=iv"))
+                         (builtin "One Step Simplification" (formula "3"))
+                        (rule "simplifySelectOfCreate" (formula "3"))
+                         (builtin "One Step Simplification" (formula "3") (ifInst ""  (formula "12")))
+                        (rule "applyEqReverse" (formula "19") (term "3,0,0") (ifseqformula "3"))
+                        (rule "applyEqReverse" (formula "19") (term "1,0,0,0,0") (ifseqformula "3"))
+                        (rule "hideAuxiliaryEq" (formula "3"))
+                        (rule "elementOfArrayRange" (formula "2") (term "0,0") (inst "iv=iv"))
+                         (builtin "One Step Simplification" (formula "2"))
+                        (rule "simplifySelectOfCreate" (formula "2"))
+                         (builtin "One Step Simplification" (formula "2") (ifInst ""  (formula "11")))
+                        (rule "applyEqReverse" (formula "18") (term "3,0,0,0,0") (ifseqformula "2"))
+                        (rule "applyEqReverse" (formula "18") (term "1,0,0,0") (ifseqformula "2"))
+                        (rule "hideAuxiliaryEq" (formula "2"))
+                        (rule "elementOfArrayRange" (formula "1") (term "0,0") (inst "iv=iv"))
+                         (builtin "One Step Simplification" (formula "1"))
+                        (rule "simplifySelectOfCreate" (formula "1"))
+                         (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "10")))
+                        (rule "applyEqReverse" (formula "17") (term "1,0,0") (ifseqformula "1"))
+                        (rule "applyEqReverse" (formula "17") (term "3,0,0,0") (ifseqformula "1"))
+                        (rule "hideAuxiliaryEq" (formula "1"))
+                        (rule "returnUnfold" (formula "16") (term "1") (inst "#v0=d_9"))
+                        (rule "variableDeclarationAssign" (formula "16") (term "1"))
+                        (rule "variableDeclaration" (formula "16") (term "1") (newnames "d_9"))
+                        (rule "assignment_read_attribute_this" (formula "16"))
+                         (builtin "One Step Simplification" (formula "16"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "0,1,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "0,1,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "0,1,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "0,1,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "0,1,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "0,1,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "0,1,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "0,1,0"))
+                        (rule "replaceKnownSelect_taclet00001_0" (formula "16") (term "0,1,0"))
+                        (rule "replaceKnownAuxiliaryConstant_taclet00000001_4" (formula "16") (term "0,1,0"))
+                        (rule "methodCallReturnIgnoreResult" (formula "16") (term "1"))
+                         (builtin "One Step Simplification" (formula "16"))
+                        (rule "emptyModality" (formula "16") (term "1"))
+                         (builtin "One Step Simplification" (formula "16"))
+                        (rule "eqSymm" (formula "16") (term "1,0"))
+                        (rule "eqSymm" (formula "16") (term "1"))
+                        (rule "eqSymm" (formula "16") (term "0,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,1,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,1,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,1"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,1"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,0,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,1,1,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,1,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,1,1"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,1"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,0,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,1,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,1,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,1,1"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,1"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,1,0,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,0,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,1,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,1,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,1,1"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,1"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,0,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,1,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,1,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,1"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,1"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,1,0,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,0,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,1,1,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,1,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,1"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,1"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,0,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,1,1,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,1,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,1"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,1"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,1,0,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,0,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,1,0"))
+                        (rule "replaceKnownSelect_taclet00001_1" (formula "16") (term "1,0,1,0"))
+                        (rule "replaceKnownAuxiliaryConstant_taclet00000001_6" (formula "16") (term "1,0,1,0"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,1"))
+                        (rule "replaceKnownSelect_taclet000001_2" (formula "16") (term "1,0,1"))
+                        (rule "replaceKnownAuxiliaryConstant_taclet00000001_8" (formula "16") (term "1,0,1"))
+                        (rule "dismissNonSelectedField" (formula "16") (term "1,0,0,0"))
+                        (rule "replaceKnownSelect_taclet00001_0" (formula "16") (term "1,0,0,0"))
+                        (rule "replaceKnownAuxiliaryConstant_taclet00000001_4" (formula "16") (term "1,0,0,0"))
+                        (rule "pullOutSelect" (formula "16") (term "1,1,0") (inst "selectSK=arr_0"))
+                        (rule "simplifySelectOfStore" (formula "1"))
+                         (builtin "One Step Simplification" (formula "1"))
+                        (rule "castDel" (formula "1") (term "1,0"))
+                        (rule "eqSymm" (formula "1") (term "0,0"))
+                        (rule "pullOutSelect" (formula "17") (term "1,1") (inst "selectSK=arr_2"))
+                        (rule "simplifySelectOfStore" (formula "1"))
+                         (builtin "One Step Simplification" (formula "1"))
+                        (rule "castDel" (formula "1") (term "1,0"))
+                        (rule "equal_literals" (formula "1") (term "1,0,0"))
+                         (builtin "One Step Simplification" (formula "1"))
+                        (rule "simplifySelectOfStore" (formula "1"))
+                         (builtin "One Step Simplification" (formula "1"))
+                        (rule "castDel" (formula "1") (term "1,0"))
+                        (rule "equal_literals" (formula "1") (term "1,0,0"))
+                         (builtin "One Step Simplification" (formula "1"))
+                        (rule "simplifySelectOfStore" (formula "1"))
+                         (builtin "One Step Simplification" (formula "1"))
+                        (rule "castDel" (formula "1") (term "1,0"))
+                        (rule "eqSymm" (formula "1") (term "0,0"))
+                        (rule "dismissNonSelectedField" (formula "1") (term "2,0"))
+                        (rule "pullOutSelect" (formula "18") (term "1,1,0,0") (inst "selectSK=other_SmallExampleCollection_dummyArr_0"))
+                        (rule "applyEq" (formula "2") (term "1,2,0") (ifseqformula "1"))
+                        (rule "applyEq" (formula "3") (term "1,2,0") (ifseqformula "1"))
+                        (rule "applyEq" (formula "2") (term "0,0,0") (ifseqformula "1"))
+                        (rule "applyEq" (formula "3") (term "0,0,0") (ifseqformula "1"))
+                        (rule "simplifySelectOfStore" (formula "1"))
+                         (builtin "One Step Simplification" (formula "1"))
+                        (rule "castDel" (formula "1") (term "0"))
+                        (rule "applyEqReverse" (formula "19") (term "1,1,0,0") (ifseqformula "1"))
+                        (rule "applyEqReverse" (formula "2") (term "1,2,0") (ifseqformula "1"))
+                        (rule "applyEqReverse" (formula "3") (term "1,2,0") (ifseqformula "1"))
+                        (rule "applyEqReverse" (formula "2") (term "0,0,0") (ifseqformula "1"))
+                         (builtin "One Step Simplification" (formula "2"))
+                        (rule "applyEqReverse" (formula "3") (term "0,0,0") (ifseqformula "1"))
+                         (builtin "One Step Simplification" (formula "3"))
+                        (rule "applyEqReverse" (formula "19") (term "1,1,0") (ifseqformula "3"))
+                        (rule "applyEqReverse" (formula "19") (term "1,1") (ifseqformula "2"))
+                        (rule "hideAuxiliaryEq" (formula "1"))
+                        (rule "hideAuxiliaryEq" (formula "1"))
+                        (rule "hideAuxiliaryEq" (formula "1"))
+                        (rule "pullOutSelect" (formula "16") (term "0,1,0") (inst "selectSK=other_DummyObject_otherDummy_0"))
+                        (rule "simplifySelectOfStore" (formula "1"))
+                         (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "15")))
+                        (rule "simplifySelectOfStore" (formula "1"))
+                         (builtin "One Step Simplification" (formula "1"))
+                        (rule "castDel" (formula "1") (term "0"))
+                        (rule "applyEqReverse" (formula "17") (term "0,1,0") (ifseqformula "1"))
+                         (builtin "One Step Simplification" (formula "17"))
+                        (rule "hideAuxiliaryEq" (formula "1"))
+                        (rule "pullOutSelect" (formula "16") (term "0,1") (inst "selectSK=other_DummyObject_otherDummy_1"))
+                        (rule "simplifySelectOfStore" (formula "1"))
+                         (builtin "One Step Simplification" (formula "1"))
+                        (rule "castDel" (formula "1") (term "0"))
+                        (rule "applyEqReverse" (formula "17") (term "0,1") (ifseqformula "1"))
+                         (builtin "One Step Simplification" (formula "17"))
+                        (rule "hideAuxiliaryEq" (formula "1"))
+                        (rule "pullOutSelect" (formula "16") (term "1") (inst "selectSK=arr_3"))
+                        (rule "simplifySelectOfStore" (formula "1"))
+                         (builtin "One Step Simplification" (formula "1"))
+                        (rule "castDel" (formula "1") (term "1,0"))
+                        (rule "equal_literals" (formula "1") (term "0,0"))
+                         (builtin "One Step Simplification" (formula "1"))
+                        (rule "simplifySelectOfStore" (formula "1"))
+                         (builtin "One Step Simplification" (formula "1"))
+                        (rule "castDel" (formula "1") (term "0"))
+                        (rule "applyEqReverse" (formula "17") (term "1") (ifseqformula "1"))
+                        (rule "hideAuxiliaryEq" (formula "1"))
+                        (rule "pullOutSelect" (formula "16") (term "0") (inst "selectSK=other_DummyObject_otherDummy_2"))
+                        (rule "simplifySelectOfStore" (formula "1"))
+                         (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "16")))
+                        (rule "simplifySelectOfStore" (formula "1"))
+                         (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "14")))
+                        (rule "simplifySelectOfStore" (formula "1"))
+                         (builtin "One Step Simplification" (formula "1"))
+                        (rule "castDel" (formula "1") (term "0"))
+                        (rule "applyEqReverse" (formula "17") (term "0") (ifseqformula "1"))
+                         (builtin "One Step Simplification" (formula "17"))
+                        (rule "closeTrue" (formula "17"))
+                     )
+                     (branch "Null Reference (d_7 = null)"
+                        (rule "false_right" (formula "20"))
+                         (builtin "One Step Simplification" (formula "1"))
+                        (rule "applyEq" (formula "2") (term "1") (ifseqformula "1"))
+                         (builtin "One Step Simplification" (formula "2"))
+                        (rule "elementOfArrayRange" (formula "4") (term "0,0") (inst "iv=iv"))
+                         (builtin "One Step Simplification" (formula "4"))
+                        (rule "simplifySelectOfCreate" (formula "4"))
+                         (builtin "One Step Simplification" (formula "4") (ifInst ""  (formula "13")))
+                        (rule "hideAuxiliaryEq" (formula "4"))
+                        (rule "elementOfArrayRange" (formula "3") (term "0,0") (inst "iv=iv"))
+                         (builtin "One Step Simplification" (formula "3"))
+                        (rule "simplifySelectOfCreate" (formula "3"))
+                         (builtin "One Step Simplification" (formula "3") (ifInst ""  (formula "12")))
+                        (rule "hideAuxiliaryEq" (formula "3"))
+                        (rule "elementOfArrayRange" (formula "2") (term "0") (inst "iv=iv"))
+                         (builtin "One Step Simplification" (formula "2"))
+                        (rule "pullOutSelect" (formula "2") (term "0") (inst "selectSK=other_SmallExampleCollection_d3_1"))
+                        (rule "simplifySelectOfCreate" (formula "2"))
+                         (builtin "One Step Simplification" (formula "2") (ifInst ""  (formula "12")))
+                        (rule "applyEqReverse" (formula "3") (term "0") (ifseqformula "2"))
+                        (rule "close" (formula "15") (ifseqformula "3"))
+                     )
+                  )
+                  (branch "Null Reference (d_4 = null)"
+                     (rule "false_right" (formula "20"))
+                      (builtin "One Step Simplification" (formula "1"))
+                     (rule "applyEq" (formula "3") (term "1") (ifseqformula "1"))
+                      (builtin "One Step Simplification" (formula "3"))
+                     (rule "elementOfArrayRange" (formula "4") (term "0,0") (inst "iv=iv"))
+                      (builtin "One Step Simplification" (formula "4"))
+                     (rule "simplifySelectOfCreate" (formula "4"))
+                      (builtin "One Step Simplification" (formula "4") (ifInst ""  (formula "13")))
+                     (rule "hideAuxiliaryEq" (formula "4"))
+                     (rule "elementOfArrayRange" (formula "2") (term "0,0") (inst "iv=iv"))
+                      (builtin "One Step Simplification" (formula "2"))
+                     (rule "simplifySelectOfCreate" (formula "2"))
+                      (builtin "One Step Simplification" (formula "2") (ifInst ""  (formula "12")))
+                     (rule "hideAuxiliaryEq" (formula "2"))
+                     (rule "elementOfArrayRange" (formula "2") (term "0") (inst "iv=iv"))
+                      (builtin "One Step Simplification" (formula "2"))
+                     (rule "pullOutSelect" (formula "2") (term "0") (inst "selectSK=other_SmallExampleCollection_d2_1"))
+                     (rule "simplifySelectOfCreate" (formula "2"))
+                      (builtin "One Step Simplification" (formula "2") (ifInst ""  (formula "12")))
+                     (rule "applyEqReverse" (formula "3") (term "0") (ifseqformula "2"))
+                     (rule "close" (formula "14") (ifseqformula "3"))
+                  )
+               )
+               (branch "Null Reference (d_1 = null)"
+                   (builtin "One Step Simplification" (formula "19"))
+                   (builtin "One Step Simplification" (formula "1"))
+                  (rule "false_right" (formula "19"))
+                  (rule "applyEq" (formula "3") (term "1") (ifseqformula "1"))
+                   (builtin "One Step Simplification" (formula "3"))
+                  (rule "elementOfArrayRange" (formula "2") (term "0,0") (inst "iv=iv"))
+                   (builtin "One Step Simplification" (formula "2"))
+                  (rule "simplifySelectOfCreate" (formula "2"))
+                   (builtin "One Step Simplification" (formula "2") (ifInst ""  (formula "12")))
+                  (rule "hideAuxiliaryEq" (formula "2"))
+                  (rule "elementOfArrayRange" (formula "2") (term "0") (inst "iv=iv"))
+                   (builtin "One Step Simplification" (formula "2"))
+                  (rule "pullOutSelect" (formula "2") (term "0") (inst "selectSK=other_SmallExampleCollection_d1_1"))
+                  (rule "simplifySelectOfCreate" (formula "2"))
+                   (builtin "One Step Simplification" (formula "2") (ifInst ""  (formula "12")))
+                  (rule "applyEqReverse" (formula "3") (term "0") (ifseqformula "2"))
+                  (rule "close" (formula "13") (ifseqformula "3"))
+               )
+            )
+            (branch "Null Reference (dim0 < 0 = null)"
+               (rule "false_right" (formula "17"))
+                (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "10")))
+               (rule "closeFalse" (formula "1"))
+            )
+            (branch "Index Out of Bounds (dim0 < 0 != null, but 2 Out of Bounds!)"
+               (rule "false_right" (formula "17"))
+                (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "10")))
+               (rule "less_literals" (formula "1") (term "1"))
+                (builtin "One Step Simplification" (formula "1"))
+               (rule "applyEq" (formula "1") (term "0") (ifseqformula "2"))
+               (rule "leq_literals" (formula "1"))
+               (rule "closeFalse" (formula "1"))
+            )
+            (branch "Array Store Exception (incompatible dynamic element type of dim0 < 0 and dim0 < 0)"
+               (rule "false_right" (formula "17"))
+                (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "10")))
+               (rule "qeq_literals" (formula "1") (term "1,0"))
+                (builtin "One Step Simplification" (formula "1"))
+               (rule "andLeft" (formula "1"))
+               (rule "notLeft" (formula "2"))
+               (rule "array_store_known_dynamic_array_type" (formula "9") (ifseqformula "3"))
+                (builtin "One Step Simplification" (formula "9") (ifInst ""  (formula "14")))
+               (rule "closeTrue" (formula "9"))
+            )
+         )
+         (branch "Null Reference (dim0 < 0 = null)"
+            (rule "false_right" (formula "17"))
+             (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "10")))
+            (rule "closeFalse" (formula "1"))
+         )
+         (branch "Index Out of Bounds (dim0 < 0 != null, but 1 Out of Bounds!)"
+            (rule "false_right" (formula "17"))
+             (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "10")))
+            (rule "less_literals" (formula "1") (term "1"))
+             (builtin "One Step Simplification" (formula "1"))
+            (rule "applyEq" (formula "1") (term "0") (ifseqformula "2"))
+            (rule "leq_literals" (formula "1"))
+            (rule "closeFalse" (formula "1"))
+         )
+         (branch "Array Store Exception (incompatible dynamic element type of dim0 < 0 and dim0 < 0)"
+            (rule "false_right" (formula "17"))
+             (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "10")))
+            (rule "qeq_literals" (formula "1") (term "1,0"))
+             (builtin "One Step Simplification" (formula "1"))
+            (rule "andLeft" (formula "1"))
+            (rule "notLeft" (formula "2"))
+            (rule "array_store_known_dynamic_array_type" (formula "9") (ifseqformula "3"))
+             (builtin "One Step Simplification" (formula "9") (ifInst ""  (formula "13")))
+            (rule "closeTrue" (formula "9"))
+         )
+      )
+      (branch "Null Reference (dim0 < 0 = null)"
+          (builtin "One Step Simplification" (formula "17"))
+          (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "10")))
+         (rule "closeFalse" (formula "1"))
+      )
+      (branch "Index Out of Bounds (dim0 < 0 != null, but 0 Out of Bounds!)"
+         (rule "false_right" (formula "17"))
+          (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "10")))
+         (rule "less_literals" (formula "1") (term "1"))
+          (builtin "One Step Simplification" (formula "1"))
+         (rule "applyEq" (formula "1") (term "0") (ifseqformula "2"))
+         (rule "leq_literals" (formula "1"))
+         (rule "closeFalse" (formula "1"))
+      )
+      (branch "Array Store Exception (incompatible dynamic element type of dim0 < 0 and dim0 < 0)"
+         (rule "false_right" (formula "17"))
+          (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "10")))
+         (rule "qeq_literals" (formula "1") (term "1,0"))
+          (builtin "One Step Simplification" (formula "1"))
+         (rule "andLeft" (formula "1"))
+         (rule "notLeft" (formula "2"))
+         (rule "array_store_known_dynamic_array_type" (formula "9") (ifseqformula "3"))
+          (builtin "One Step Simplification" (formula "9") (ifInst ""  (formula "12")))
+         (rule "closeTrue" (formula "9"))
+      )
+   )
+   (branch "Null Reference (newObject = null)"
+      (rule "false_right" (formula "17"))
+       (builtin "One Step Simplification" (formula "1") (ifInst ""  (formula "10")))
+      (rule "closeFalse" (formula "1"))
+   )
+)
+)
+}
